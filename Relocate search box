@@ -1,0 +1,41 @@
+In SharePoint 2013, repositioning the search box along with the navigation bar using Content Editor Web Parts (CEWP) or Script Editor Web Parts (SEWP) might not be straightforward, as these web parts are typically used for adding custom scripts or content to SharePoint pages.
+
+However, you can achieve the repositioning of the search box by customizing the master page or using SharePoint Designer to modify the page layout. Here are general steps to reposition the search box:
+
+### Using SharePoint Designer:
+
+1. Open your site in SharePoint Designer.
+2. Navigate to "Site Objects" and select "All Files."
+3. Find and select "_catalogs" > "masterpage."
+4. Locate your site's master page (e.g., "seattle.master") and right-click to edit it.
+5. In the master page, find the HTML code that defines the structure of the page layout.
+6. Locate the placeholder for the search box (usually named "PlaceHolderSearchArea") and adjust its position within the HTML structure.
+7. Save and check in the master page. Publish it if necessary.
+
+### Using Custom CSS (within a CEWP or SEWP):
+
+If modifying the master page is not an option, you can use custom CSS within a CEWP or SEWP to adjust the positioning of the search box. This might involve manipulating the CSS styles to move the search box element. Here's a simplified example using SEWP:
+
+1. Add a Script Editor Web Part to your page.
+2. Insert the following script:
+
+```javascript
+<script type="text/javascript">
+    // Wait for the SharePoint script to load
+    _spBodyOnLoadFunctionNames.push("repositionSearchBox");
+
+    function repositionSearchBox() {
+        // Move the search box to a different location
+        var searchBox = document.getElementById("DeltaPlaceHolderSearchArea");
+        var newLocation = document.getElementById("DeltaTopNavigation");
+        
+        if (searchBox && newLocation) {
+            newLocation.appendChild(searchBox);
+        }
+    }
+</script>
+```
+
+This script attempts to move the search box to a different location within the DOM. You may need to adjust the script based on your specific HTML structure.
+
+Keep in mind that directly manipulating the DOM with JavaScript should be approached with caution, and thorough testing is recommended. Additionally, SharePoint's CSS and HTML structure may vary, so adjustments may be needed depending on your specific environment and design. Always test changes in a development or staging environment before applying them to production.
