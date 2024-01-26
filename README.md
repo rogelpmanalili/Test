@@ -1,11 +1,22 @@
-/* Navbar container */
+​<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+* {
+  box-sizing: border-box;
+}
+​
+body {
+  margin: 0;
+}
+​
 .navbar {
   overflow: hidden;
   background-color: #333;
-  font-family: Arial;
+  font-family: Arial, Helvetica, sans-serif;
 }
-
-/* Links inside the navbar */
+​
 .navbar a {
   float: left;
   font-size: 16px;
@@ -14,31 +25,27 @@
   padding: 14px 16px;
   text-decoration: none;
 }
-
-/* The dropdown container */
+​
 .dropdown {
   float: left;
   overflow: hidden;
 }
-
-/* Dropdown button */
+​
 .dropdown .dropbtn {
-  font-size: 16px; 
+  font-size: 16px;  
   border: none;
   outline: none;
   color: white;
   padding: 14px 16px;
   background-color: inherit;
-  font: inherit; /* Important for vertical align on mobile phones */
-  margin: 0; /* Important for vertical align on mobile phones */
+  font: inherit;
+  margin: 0;
 }
-
-/* Add a red background color to navbar links on hover */
+​
 .navbar a:hover, .dropdown:hover .dropbtn {
   background-color: red;
 }
-
-/* Dropdown content (hidden by default) */
+​
 .dropdown-content {
   display: none;
   position: absolute;
@@ -48,15 +55,13 @@
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
 }
-
-/* Mega Menu header, if needed */
+​
 .dropdown-content .header {
   background: red;
   padding: 16px;
   color: white;
 }
-
-/* Show the dropdown menu on hover */
+​
 .dropdown:hover .dropdown-content {
   display: block;
 }
@@ -69,8 +74,7 @@
   background-color: #ccc;
   height: 250px;
 }
-
-/* Style links inside the columns */
+​
 .column a {
   float: none;
   color: black;
@@ -79,12 +83,11 @@
   display: block;
   text-align: left;
 }
-
-/* Add a background color on hover */
+​
 .column a:hover {
   background-color: #ddd;
 }
-
+​
 /* Clear floats after the columns */
 .row:after {
   content: "";
@@ -92,8 +95,17 @@
   clear: both;
 }
 
-
-
+/* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+  .column {
+    width: 100%;
+    height: auto;
+  }
+}
+</style>
+</head>
+<body style="background-color:white;">
+​
 <div class="navbar">
   <a href="#home">Home</a>
   <a href="#news">News</a>
@@ -104,7 +116,7 @@
     <div class="dropdown-content">
       <div class="header">
         <h2>Mega Menu</h2>
-      </div> 
+      </div>   
       <div class="row">
         <div class="column">
           <h3>Category 1</h3>
@@ -128,3 +140,12 @@
     </div>
   </div> 
 </div>
+​
+<div style="padding:16px">
+  <h3>Responsive Mega Menu (Full-width dropdown in navbar)</h3>
+  <p>Hover over the "Dropdown" link to see the mega menu.</p>
+  <p>Resize the browser window to see the responsive effect.</p>
+</div>
+​
+</body>
+</html>
