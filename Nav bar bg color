@@ -1,0 +1,36 @@
+Certainly! Here's a simple example of how you can use Custom Actions and JavaScript to customize the look and feel of a SharePoint page in SharePoint 2013. In this example, we'll add a custom script to change the background color of the site's navigation bar.
+
+1. **Create a JavaScript file:**
+   Create a JavaScript file (e.g., custom.js) with the following content:
+
+```javascript
+// custom.js
+
+// Wait for the SharePoint script to load
+_spBodyOnLoadFunctionNames.push("applyCustomStyles");
+
+function applyCustomStyles() {
+    // Change the background color of the navigation bar
+    var navBar = document.getElementById("DeltaTopNavigation");
+    if (navBar) {
+        navBar.style.backgroundColor = "#336699"; // Change the color as per your preference
+    }
+}
+```
+
+2. **Upload the JavaScript file:**
+   - Upload the `custom.js` file to a document library in your SharePoint site, such as the "Site Assets" library.
+
+3. **Add a Custom Action:**
+   - Go to your SharePoint site.
+   - Click on the gear icon in the top right corner to open the settings menu, and choose "Site Settings."
+   - Under the "Site Actions" section, click on "Manage site features" and activate the "Custom Script" feature. This is required for custom scripts to run on the site.
+
+4. **Add a Script Editor Web Part (SEWP):**
+   - Edit the page where you want to apply the customization.
+   - Add a Script Editor Web Part to the page.
+   - Edit the web part and link it to the `custom.js` file you uploaded.
+
+Now, when you refresh the page, the background color of the navigation bar should change to the specified color.
+
+Note: This is a basic example, and you can extend this approach to include more complex customizations using JavaScript. Always ensure that your customizations are tested thoroughly, and be mindful of the impact on user experience and performance. Additionally, modern SharePoint experiences may have different approaches for customization, and you might need to consider SharePoint Framework (SPFx) for more advanced scenarios.
