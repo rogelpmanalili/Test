@@ -1,0 +1,60 @@
+Certainly! Below is a simplified example of JavaScript code using the SharePoint REST API for CRUD operations on a SharePoint 2013 tasks list. This example uses jQuery for simplicity:
+
+```javascript
+// Ensure jQuery is loaded
+SP.SOD.executeFunc('jquery.js', 'jQuery', function () {
+    // SharePoint ready function
+    $(document).ready(function () {
+        // Function to retrieve tasks
+        function retrieveTasks() {
+            $.ajax({
+                url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('YourTasksList')/items",
+                method: "GET",
+                headers: { "Accept": "application/json; odata=verbose" },
+                success: function (data) {
+                    // Handle retrieved tasks data
+                    console.log(data.d.results);
+                },
+                error: function (error) {
+                    console.log(JSON.stringify(error));
+                }
+            });
+        }
+
+        // Function to create a new task
+        function createTask() {
+            var taskData = {
+                '__metadata': { 'type': 'SP.Data.YourTasksListListItem' },
+                'Title': 'New Task',
+                'Status': 'Not Started'
+            };
+
+            $.ajax({
+                url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('YourTasksList')/items",
+                method: "POST",
+                headers: {
+                    "Accept": "application/json;odata=verbose",
+                    "X-RequestDigest": $("#__REQUESTDIGEST").val(),
+                    "Content-Type": "application/json;odata=verbose"
+                },
+                data: JSON.stringify(taskData),
+                success: function (data) {
+                    // Handle success
+                    console.log("Task created successfully");
+                },
+                error: function (error) {
+                    console.log(JSON.stringify(error));
+                }
+            });
+        }
+
+        // Call the retrieveTasks function to fetch existing tasks
+        retrieveTasks();
+
+        // Uncomment the line below to create a new task (execute only when needed)
+        // createTask();
+    });
+});
+```
+
+Make sure to replace `'YourTasksList'` with the actual name of your tasks list and adjust the field names accordingly. Also, ensure that jQuery is loaded before executing this code. This example assumes you have a column named 'Status' in your tasks list; adjust it according to your actual column names.
