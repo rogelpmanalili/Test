@@ -1,42 +1,85 @@
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-<script type="text/javascript">
-   google.charts.load('current', {'packages':['corechart']});
-   google.charts.setOnLoadCallback(drawChart);
+To visualize tasks data from a SharePoint 2013 Tasks app using Google Charts, you would typically need to retrieve the task data from SharePoint using SharePoint's REST API and then use that data to create a Google Chart. Here's a basic example using JavaScript, jQuery, and Google Charts:
 
-   function drawChart() {
-      // Fetch data from SharePoint Tasks list using REST API
-      // Replace 'YourSiteUrl' and 'YourListName' with your actual site URL and list name
-      var apiUrl = "/_api/web/lists/getbytitle('YourListName')/items?$select=Status,Title&$top=1000";
+1. **Include Google Visualization Library:**
+   In the `<head>` section of your HTML, include the Google Visualization Library:
 
-      var xhr = new XMLHttpRequest();
-      xhr.open('GET', apiUrl, true);
-      xhr.setRequestHeader('Accept', 'application/json;odata=nometadata');
-      
-      xhr.onreadystatechange = function() {
-         if (xhr.readyState == 4 && xhr.status == 200) {
-            var response = JSON.parse(xhr.responseText);
-            var taskData = [['Task Status', 'Number of Tasks']];
+   ```html
+   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+   ```
 
-            // Process the response and populate taskData array
-            response.value.forEach(function(task) {
-               taskData.push([task.Status, 1]); // Assuming each task contributes 1 to the count
-            });
+2. **Load Visualization Library and Fetch SharePoint Tasks Data:**
+   Load the Visualization Library and set a callback function to initiate the loading of other libraries, such as charts. Fetch tasks data using SharePoint REST API:
 
-            // Create Google Chart
-            var data = google.visualization.arrayToDataTable(taskData);
+   ```html
+   <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(getSharePointTasks);
 
-            var options = {
-               title: 'Task Status',
-            };
+      function getSharePointTasks() {
+         // Replace 'your_site_url' and 'your_list_name' with your SharePoint site URL and list name
+         var apiUrl = "/_api/web/lists/getbytitle('your_list_name')/items?$select=Title,Status,StartDate,DueDate";
 
-            var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-            chart.draw(data, options);
+         // Make AJAX request to SharePoint REST API
+         $.ajax({
+            url: apiUrl,
+            method: 'GET',
+            headers: {
+               'Accept': 'application/json;odata=verbose'
+            },
+            success: function(data) {
+               // Call the function to draw the chart with SharePoint tasks data
+               drawChart(data.d.results);
+            },
+            error: function(error) {
+               console.log('Error fetching SharePoint tasks:', error);
+            }
+         });
+      }
+   </script>
+   ```
+
+   Ensure you have jQuery or an equivalent library for handling AJAX requests.
+
+3. **Draw Google Chart:**
+   Write a function to handle the drawing of your specific chart using the fetched SharePoint tasks data:
+
+   ```html
+   <script type="text/javascript">
+      function drawChart(tasksData) {
+         // Your chart drawing logic using tasksData
+         var data = new google.visualization.DataTable();
+         data.addColumn('string', 'Task');
+         data.addColumn('date', 'Start Date');
+         data.addColumn('date', 'Due Date');
+         data.addColumn('string', 'Status');
+
+         // Populate data from SharePoint tasks
+         for (var i = 0; i < tasksData.length; i++) {
+            var task = tasksData[i];
+            data.addRow([task.Title, new Date(task.StartDate), new Date(task.DueDate), task.Status]);
          }
-      };
 
-      xhr.send();
-   }
-</script>
+         var options = {
+            // Your chart options
+         };
 
-<div id="chart_div" style="width: 100%; height: 300px;"></div>
+         // Replace 'your_chart_div' with the ID of the HTML element where you want to embed the chart
+         var chart = new google.visualization.Timeline(document.getElementById('your_chart_div'));
+         chart.draw(data, options);
+      }
+   </script>
+   ```
+
+   Adjust the column types and data mapping based on your SharePoint tasks structure and the chart type you want to create.
+
+4. **Embed the Chart Container:**
+   In your HTML body, create a container for the chart:
+
+   ```html
+   <div id="your_chart_div" style="width: 100%; height: 400px;"></div>
+   ```
+
+   Adjust the width, height, and other styles as needed.
+
+Make sure to replace placeholders like 'your_site_url' and 'your_list_name' with your actual SharePoint site URL and list name. Adjust the chart type and options based on your visualization requirements.
