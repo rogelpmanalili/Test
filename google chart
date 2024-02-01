@@ -1,0 +1,42 @@
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<script type="text/javascript">
+   google.charts.load('current', {'packages':['corechart']});
+   google.charts.setOnLoadCallback(drawChart);
+
+   function drawChart() {
+      // Fetch data from SharePoint Tasks list using REST API
+      // Replace 'YourSiteUrl' and 'YourListName' with your actual site URL and list name
+      var apiUrl = "/_api/web/lists/getbytitle('YourListName')/items?$select=Status,Title&$top=1000";
+
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', apiUrl, true);
+      xhr.setRequestHeader('Accept', 'application/json;odata=nometadata');
+      
+      xhr.onreadystatechange = function() {
+         if (xhr.readyState == 4 && xhr.status == 200) {
+            var response = JSON.parse(xhr.responseText);
+            var taskData = [['Task Status', 'Number of Tasks']];
+
+            // Process the response and populate taskData array
+            response.value.forEach(function(task) {
+               taskData.push([task.Status, 1]); // Assuming each task contributes 1 to the count
+            });
+
+            // Create Google Chart
+            var data = google.visualization.arrayToDataTable(taskData);
+
+            var options = {
+               title: 'Task Status',
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+         }
+      };
+
+      xhr.send();
+   }
+</script>
+
+<div id="chart_div" style="width: 100%; height: 300px;"></div>
