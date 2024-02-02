@@ -1,0 +1,312 @@
+In SharePoint 2013, you can create a relationship between two lists using lookup columns. In your case, you want to connect the "Books" worklist to the "Authors" worklist, where the `AuthorID` in the "Books" list references the `AuthorID` in the "Authors" list.
+
+Here are the steps to achieve this:
+
+1. **Create the Authors Worklist:**
+   - Create a list named "Authors" with the fields "AuthorID" (Number) and "AuthorName" (Single Line of Text).
+
+2. **Create the Books Worklist:**
+   - Create a list named "Books" with the fields "BookID" (Number), "Title" (Single Line of Text), and "AuthorID" (Lookup to Authors list).
+
+3. **Edit the NewForm or EditForm:**
+   - Open the NewForm or EditForm for the "Authors" list.
+   - Add a Content Editor Web Part or Script Editor Web Part to the form.
+
+4. **Insert Div Container:**
+   - Insert the following HTML code into the Content Editor Web Part or Script Editor Web Part:
+
+```html
+<div id="booksContainer">
+    <!-- Your Books form or controls go here -->
+    <!-- You can use SharePoint Designer or customize with JavaScript -->
+</div>
+```
+
+This `booksContainer` div will be the placeholder for your Books form or controls.
+
+5. **Connect Books Worklist to Authors Worklist:**
+   - Use JavaScript or SharePoint Designer to customize the form and add logic for creating, updating, and deleting books within the `booksContainer`.
+   - You'll need to use SharePoint's JavaScript Object Model (JSOM) or REST API to interact with the "Books" list from within the "Authors" list form.
+
+Here is a simplified example using JavaScript and jQuery:
+
+```html
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function () {
+    // Your logic for creating, updating, and deleting books goes here
+    // Use SharePoint JSOM or REST API to interact with the "Books" list
+    // Example: Create a new book
+    createBook("New Book Title", authorId);
+});
+
+function createBook(title, authorId) {
+    var ctx = SP.ClientContext.get_current();
+    var web = ctx.get_web();
+    var list = web.get_lists().getByTitle("Books");
+
+    var itemCreateInfo = new SP.ListItemCreationInformation();
+    var newItem = list.addItem(itemCreateInfo);
+
+    newItem.set_item("Title", title);
+    newItem.set_item("AuthorID", authorId);
+
+    newItem.update();
+
+    ctx.load(newItem);
+    ctx.executeQueryAsync(
+        Function.createDelegate(this, function () {
+            // Book created successfully
+            console.log("Book created successfully");
+        }),
+        Function.createDelegate(this, function (sender, args) {
+            // Error handling
+            console.log("Error: " + args.get_message());
+        })
+    );
+}
+
+</script>
+```
+
+This example demonstrates how to create a new book when the form loads. You will need to extend this logic for updating and deleting books based on your specific requirements.
+
+Note: Ensure that you have the necessary permissions to perform these operations on the "Books" list from the "Authors" list form.
+
+//////
+
+Certainly! To display the added books within the `booksContainer` and allow users to update or delete the records/items, you can enhance the JavaScript code to dynamically create a list or table of books. Here's an example using jQuery:
+
+```html
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function () {
+    // Load existing books and display them
+    loadBooks();
+
+    // Example: Create a new book
+    createBook("New Book Title", authorId);
+
+    // Add event listener for update and delete buttons
+    $('#booksContainer').on('click', '.updateBook', function () {
+        var bookId = $(this).data('bookid');
+        // Implement logic to update the book with the given ID
+        updateBook(bookId, "Updated Book Title");
+    });
+
+    $('#booksContainer').on('click', '.deleteBook', function () {
+        var bookId = $(this).data('bookid');
+        // Implement logic to delete the book with the given ID
+        deleteBook(bookId);
+    });
+});
+
+function loadBooks() {
+    // Use SharePoint JSOM or REST API to retrieve existing books
+    // Example: Display existing books in the booksContainer
+    displayBooks([
+        { BookID: 1, Title: "Book 1" },
+        { BookID: 2, Title: "Book 2" }
+        // Add more books as needed
+    ]);
+}
+
+function displayBooks(books) {
+    var booksTable = '<table border="1"><tr><th>Book ID</th><th>Title</th><th>Actions</th></tr>';
+
+    for (var i = 0; i < books.length; i++) {
+        booksTable += '<tr>';
+        booksTable += '<td>' + books[i].BookID + '</td>';
+        booksTable += '<td>' + books[i].Title + '</td>';
+        booksTable += '<td>';
+        booksTable += '<button class="updateBook" data-bookid="' + books[i].BookID + '">Update</button>';
+        booksTable += '<button class="deleteBook" data-bookid="' + books[i].BookID + '">Delete</button>';
+        booksTable += '</td>';
+        booksTable += '</tr>';
+    }
+
+    booksTable += '</table>';
+
+    $('#booksContainer').append(booksTable);
+}
+
+function createBook(title, authorId) {
+    // Implement logic to create a new book
+    // Use SharePoint JSOM or REST API
+}
+
+function updateBook(bookId, title) {
+    // Implement logic to update the book with the given ID
+    // Use SharePoint JSOM or REST API
+}
+
+function deleteBook(bookId) {
+    // Implement logic to delete the book with the given ID
+    // Use SharePoint JSOM or REST API
+}
+
+</script>
+```
+
+In this example, the `loadBooks` function is responsible for retrieving existing books and displaying them within the `booksContainer`. The `displayBooks` function dynamically creates an HTML table listing the books with update and delete buttons.
+
+The event listeners (`updateBook` and `deleteBook`) are attached to the update and delete buttons within the `booksContainer`. You will need to implement the logic inside these functions to perform the actual update and delete operations using SharePoint JSOM or REST API based on the selected book ID.
+
+Adjust the code according to your specific requirements and SharePoint environment.
+
+//////////////
+
+Certainly! To create, update, and delete books using SharePoint's REST API, you can use the following code. This assumes that you have the necessary permissions to perform these operations.
+
+```html
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function () {
+    // Load existing books and display them
+    loadBooks();
+
+    // Example: Create a new book
+    createBook("New Book Title", authorId);
+
+    // Add event listener for update and delete buttons
+    $('#booksContainer').on('click', '.updateBook', function () {
+        var bookId = $(this).data('bookid');
+        var newTitle = "Updated Book Title";
+        updateBook(bookId, newTitle);
+    });
+
+    $('#booksContainer').on('click', '.deleteBook', function () {
+        var bookId = $(this).data('bookid');
+        deleteBook(bookId);
+    });
+});
+
+function loadBooks() {
+    // Use SharePoint REST API to retrieve existing books
+    var endpointUrl = "/_api/web/lists/getbytitle('Books')/items?$select=BookID,Title";
+    
+    $.ajax({
+        url: _spPageContextInfo.webAbsoluteUrl + endpointUrl,
+        method: "GET",
+        headers: {
+            "Accept": "application/json; odata=verbose"
+        },
+        success: function (data) {
+            var books = [];
+            if (data.d && data.d.results) {
+                books = data.d.results;
+            }
+            displayBooks(books);
+        },
+        error: function (error) {
+            console.log("Error loading books: " + JSON.stringify(error));
+        }
+    });
+}
+
+function displayBooks(books) {
+    var booksTable = '<table border="1"><tr><th>Book ID</th><th>Title</th><th>Actions</th></tr>';
+
+    for (var i = 0; i < books.length; i++) {
+        booksTable += '<tr>';
+        booksTable += '<td>' + books[i].BookID + '</td>';
+        booksTable += '<td>' + books[i].Title + '</td>';
+        booksTable += '<td>';
+        booksTable += '<button class="updateBook" data-bookid="' + books[i].BookID + '">Update</button>';
+        booksTable += '<button class="deleteBook" data-bookid="' + books[i].BookID + '">Delete</button>';
+        booksTable += '</td>';
+        booksTable += '</tr>';
+    }
+
+    booksTable += '</table>';
+
+    $('#booksContainer').append(booksTable);
+}
+
+function createBook(title, authorId) {
+    var endpointUrl = "/_api/web/lists/getbytitle('Books')/items";
+
+    var bookData = {
+        __metadata: { type: "SP.Data.BooksListItem" },
+        Title: title,
+        AuthorID: authorId
+    };
+
+    $.ajax({
+        url: _spPageContextInfo.webAbsoluteUrl + endpointUrl,
+        type: "POST",
+        contentType: "application/json;odata=verbose",
+        data: JSON.stringify(bookData),
+        headers: {
+            "Accept": "application/json;odata=verbose",
+            "X-RequestDigest": $("#__REQUESTDIGEST").val()
+        },
+        success: function (data) {
+            console.log("Book created successfully");
+            // Reload the books after creating a new one
+            loadBooks();
+        },
+        error: function (error) {
+            console.log("Error creating book: " + JSON.stringify(error));
+        }
+    });
+}
+
+function updateBook(bookId, title) {
+    var endpointUrl = "/_api/web/lists/getbytitle('Books')/items(" + bookId + ")";
+
+    var bookData = {
+        __metadata: { type: "SP.Data.BooksListItem" },
+        Title: title
+    };
+
+    $.ajax({
+        url: _spPageContextInfo.webAbsoluteUrl + endpointUrl,
+        type: "MERGE",
+        contentType: "application/json;odata=verbose",
+        data: JSON.stringify(bookData),
+        headers: {
+            "Accept": "application/json;odata=verbose",
+            "X-RequestDigest": $("#__REQUESTDIGEST").val(),
+            "IF-MATCH": "*"
+        },
+        success: function (data) {
+            console.log("Book updated successfully");
+            // Reload the books after updating
+            loadBooks();
+        },
+        error: function (error) {
+            console.log("Error updating book: " + JSON.stringify(error));
+        }
+    });
+}
+
+function deleteBook(bookId) {
+    var endpointUrl = "/_api/web/lists/getbytitle('Books')/items(" + bookId + ")";
+
+    $.ajax({
+        url: _spPageContextInfo.webAbsoluteUrl + endpointUrl,
+        type: "DELETE",
+        headers: {
+            "Accept": "application/json;odata=verbose",
+            "X-RequestDigest": $("#__REQUESTDIGEST").val(),
+            "IF-MATCH": "*"
+        },
+        success: function (data) {
+            console.log("Book deleted successfully");
+            // Reload the books after deletion
+            loadBooks();
+        },
+        error: function (error) {
+            console.log("Error deleting book: " + JSON.stringify(error));
+        }
+    });
+}
+
+</script>
+```
+
+This code uses the SharePoint REST API to perform CRUD operations on the "Books" list. Please replace `SP.Data.BooksListItem` with the actual type of your list item, which you can find in the metadata in the network tab of your browser's developer tools when inspecting a request to the list. Additionally, make sure that you have the necessary permissions to perform these operations on the "Books" list.
