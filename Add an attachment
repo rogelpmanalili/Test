@@ -1,3 +1,253 @@
+//dynamic attachment
+Certainly! Below is an example of the complete code with dynamic file uploads using the FileReader API:
+
+```html
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function () {
+    // Load existing books and display them
+    loadBooks();
+
+    // Add event listener for create, update, and delete buttons
+    $('#createBookBtn').on('click', function () {
+        var title = $("#bookTitleInput").val();
+        var authorId = $("#authorIdInput").val();
+        var fileInput = document.getElementById("fileInput");
+        var attachmentFile = fileInput.files[0];
+
+        if (attachmentFile) {
+            // Read the contents of the selected file using FileReader
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var attachmentData = {
+                    name: attachmentFile.name,
+                    content: e.target.result.split(',')[1]  // Extract the base64-encoded content
+                };
+
+                // Example: Create a new book with the selected file as an attachment
+                createBook(title, authorId, attachmentData);
+            };
+            reader.readAsDataURL(attachmentFile);
+        } else {
+            // Example: Create a new book without an attachment
+            createBook(title, authorId, null);
+        }
+    });
+
+    $('#booksContainer').on('click', '.updateBook', function () {
+        var bookId = $(this).data('bookid');
+        var newTitle = "Updated Book Title";
+        var fileInput = document.getElementById("fileInput");
+        var attachmentFile = fileInput.files[0];
+
+        if (attachmentFile) {
+            // Read the contents of the selected file using FileReader
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var attachmentData = {
+                    name: attachmentFile.name,
+                    content: e.target.result.split(',')[1]  // Extract the base64-encoded content
+                };
+
+                // Example: Update the book with the selected file as an attachment
+                updateBook(bookId, newTitle, attachmentData);
+            };
+            reader.readAsDataURL(attachmentFile);
+        } else {
+            // Example: Update the book without changing the attachment
+            updateBook(bookId, newTitle, null);
+        }
+    });
+
+    $('#booksContainer').on('click', '.deleteBook', function () {
+        var bookId = $(this).data('bookid');
+        // Example: Delete the book
+        deleteBook(bookId);
+    });
+});
+
+function loadBooks() {
+    // Use SharePoint REST API to retrieve existing books
+    var endpointUrl = "/_api/web/lists/getbytitle('Books')/items?$select=BookID,Title,BookAttachments";
+
+    $.ajax({
+        url: _spPageContextInfo.webAbsoluteUrl + endpointUrl,
+        method: "GET",
+        headers: {
+            "Accept": "application/json; odata=verbose"
+        },
+        success: function (data) {
+            var books = [];
+            if (data.d && data.d.results) {
+                books = data.d.results;
+            }
+            displayBooks(books);
+        },
+        error: function (error) {
+            console.log("Error loading books: " + JSON.stringify(error));
+        }
+    });
+}
+
+function displayBooks(books) {
+    var booksTable = '<table border="1"><tr><th>Book ID</th><th>Title</th><th>Attachments</th><th>Actions</th></tr>';
+
+    for (var i = 0; i < books.length; i++) {
+        booksTable += '<tr>';
+        booksTable += '<td>' + books[i].BookID + '</td>';
+        booksTable += '<td>' + books[i].Title + '</td>';
+        booksTable += '<td>';
+
+        // Display attachment links
+        if (books[i].BookAttachments && books[i].BookAttachments.results.length > 0) {
+            for (var j = 0; j < books[i].BookAttachments.results.length; j++) {
+                booksTable += '<a href="' + books[i].BookAttachments.results[j].ServerRelativeUrl + '">' +
+                               books[i].BookAttachments.results[j].FileName + '</a><br>';
+            }
+        } else {
+            booksTable += 'No attachments';
+        }
+
+        booksTable += '</td>';
+        booksTable += '<td>';
+        booksTable += '<button class="updateBook" data-bookid="' + books[i].BookID + '">Update</button>';
+        booksTable += '<button class="deleteBook" data-bookid="' + books[i].BookID + '">Delete</button>';
+        booksTable += '</td>';
+        booksTable += '</tr>';
+    }
+
+    booksTable += '</table>';
+
+    $('#booksContainer').append(booksTable);
+}
+
+function createBook(title, authorId, attachmentData) {
+    var endpointUrl = "/_api/web/lists/getbytitle('Books')/items";
+
+    var bookData = {
+        __metadata: { type: "SP.Data.BooksListItem" },
+        Title: title,
+        AuthorID: authorId
+    };
+
+    $.ajax({
+        url: _spPageContextInfo.webAbsoluteUrl + endpointUrl,
+        type: "POST",
+        contentType: "application/json;odata=verbose",
+        data: JSON.stringify(bookData),
+        headers: {
+            "Accept": "application/json;odata=verbose",
+            "X-RequestDigest": $("#__REQUESTDIGEST").val()
+        },
+        success: function (data) {
+            console.log("Book created successfully");
+
+            // Upload attachment after creating the book
+            if (attachmentData) {
+                uploadAttachment(data.d.Id, attachmentData);
+            }
+
+            // Reload the books after creating a new one
+            loadBooks();
+        },
+        error: function (error) {
+            console.log("Error creating book: " + JSON.stringify(error));
+        }
+    });
+}
+
+function uploadAttachment(itemId, attachmentData) {
+    var endpointUrl = "/_api/web/lists/getbytitle('Books')/items(" + itemId + ")/AttachmentFiles/add(FileName='" + attachmentData.name + "')";
+
+    $.ajax({
+        url: _spPageContextInfo.webAbsoluteUrl + endpointUrl,
+        type: "POST",
+        data: attachmentData.content,
+        processData: false,
+        headers: {
+            "Accept": "application/json;odata=verbose",
+            "X-RequestDigest": $("#__REQUESTDIGEST").val(),
+            "content-length": attachmentData.content.length,
+        },
+        success: function (data) {
+            console.log("Attachment uploaded successfully");
+        },
+        error: function (error) {
+            console.log("Error uploading attachment: " + JSON.stringify(error));
+        }
+    });
+}
+
+function updateBook(bookId, title, attachmentData) {
+    var endpointUrl = "/_api/web/lists/getbytitle('Books')/items(" + bookId + ")";
+
+    var bookData = {
+        __metadata: { type: "SP.Data.BooksListItem" },
+        Title: title
+    };
+
+    $.ajax({
+        url: _spPageContextInfo.webAbsoluteUrl + endpointUrl,
+        type: "MERGE",
+        contentType: "application/json;odata=verbose",
+        data: JSON.stringify(bookData),
+        headers: {
+            "Accept": "application/json;odata=verbose",
+            "X-RequestDigest": $("#__REQUESTDIGEST").val
+
+(),
+            "IF-MATCH": "*"
+        },
+        success: function (data) {
+            console.log("Book updated successfully");
+
+            // Upload attachment after updating the book
+            if (attachmentData) {
+                uploadAttachment(bookId, attachmentData);
+            }
+
+            // Reload the books after updating
+            loadBooks();
+        },
+        error: function (error) {
+            console.log("Error updating book: " + JSON.stringify(error));
+        }
+    });
+}
+
+function deleteBook(bookId) {
+    var endpointUrl = "/_api/web/lists/getbytitle('Books')/items(" + bookId + ")";
+
+    $.ajax({
+        url: _spPageContextInfo.webAbsoluteUrl + endpointUrl,
+        type: "DELETE",
+        headers: {
+            "Accept": "application/json;odata=verbose",
+            "X-RequestDigest": $("#__REQUESTDIGEST").val(),
+            "IF-MATCH": "*"
+        },
+        success: function (data) {
+            console.log("Book deleted successfully");
+            // Reload the books after deletion
+            loadBooks();
+        },
+        error: function (error) {
+            console.log("Error deleting book: " + JSON.stringify(error));
+        }
+    });
+}
+
+</script>
+```
+
+This code assumes that you have an HTML file with an input field for the file (`<input type="file" id="fileInput" />`) and a button for creating books (`<button id="createBookBtn">Create Book</button>`). Adjust the HTML structure as needed for your SharePoint form or application.
+
+Please remember to handle user permissions and security considerations when allowing file uploads to SharePoint.
+
+
+//static attachment
+
 Yes, you can certainly add an attachment column to your SharePoint list to allow users to attach files to each line item. Here's how you can modify your "Books" list to include an attachment column:
 
 1. **Create the Attachment Column:**
