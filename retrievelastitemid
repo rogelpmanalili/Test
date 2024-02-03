@@ -1,0 +1,46 @@
+Certainly! If you're implementing this functionality in a SharePoint 2013 NewForm.aspx page, you can use the following JavaScript code in the `<script>` section or a separate script file:
+
+```javascript
+<script type="text/javascript">
+    // Ensure that the SharePoint script is loaded
+    SP.SOD.executeOrDelayUntilScriptLoaded(retrieveLastItemId, 'sp.js');
+
+    function retrieveLastItemId() {
+        var context = new SP.ClientContext.get_current();
+        var web = context.get_web();
+        var list = web.get_lists().getByTitle('YourListTitle');
+
+        var camlQuery = new SP.CamlQuery();
+        camlQuery.set_viewXml("<View><Query><OrderBy><FieldRef Name='ID' Ascending='False'/></OrderBy></Query><RowLimit>1</RowLimit></View>");
+        var items = list.getItems(camlQuery);
+
+        context.load(items, 'Include(ID)');
+        context.executeQueryAsync(onQuerySuccess, onQueryFail);
+    }
+
+    function onQuerySuccess() {
+        var lastItemId = items.itemAt(0).get_item('ID');
+        var newId = lastItemId + 1;
+
+        // Assuming you have an HTML element with id 'emailContent'
+        document.getElementById('emailContent').innerHTML = '<a href="EditFormLink?id=' + newId + '">Edit Form</a>';
+    }
+
+    function onQueryFail(sender, args) {
+        console.log('Query failed. ' + args.get_message());
+    }
+
+    // Your presaveaction function
+    function PreSaveAction() {
+        // Add your logic here for sending email using sp.utilities.utility.sendemail
+        
+        // Ensure the emailContent is populated before saving the item
+        var emailContent = document.getElementById('emailContent').innerHTML;
+        
+        // Continue with the default SharePoint form save action
+        return true;
+    }
+</script>
+```
+
+This script retrieves the last item ID, increments it, and populates the email content with a hyperlink to the EditForm. Ensure you replace 'YourListTitle' with the actual title of your SharePoint list. Also, make sure to customize the `PreSaveAction` function with your email sending logic using `sp.utilities.utility.sendemail`.
