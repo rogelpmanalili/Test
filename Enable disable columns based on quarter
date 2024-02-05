@@ -1,3 +1,74 @@
+Certainly! To implement the additional conditions for enabling/disabling columns based on the current quarter plus 10 days and checking the assigned-to column, you can modify the JavaScript code as follows:
+
+```html
+<script type="text/javascript">
+    // Function to disable all columns initially
+    function disableAllColumns() {
+        $("input[title='Quarter 1 Plan']").prop("disabled", true);
+        $("input[title='Quarter 2 Plan']").prop("disabled", true);
+        $("input[title='Quarter 3 Plan']").prop("disabled", true);
+        $("input[title='Quarter 4 Plan']").prop("disabled", true);
+    }
+
+    // Function to enable the column corresponding to the current quarter plus 10 days
+    function enableColumnBasedOnConditions() {
+        var currentDate = new Date();
+        
+        // Add 10 days to the current date
+        var currentDatePlus10Days = new Date(currentDate);
+        currentDatePlus10Days.setDate(currentDate.getDate() + 10);
+
+        // Check if the current date is within the quarter plus 10 days
+        var currentMonth = currentDatePlus10Days.getMonth() + 1; // Month is 0-indexed
+        var currentQuarter = Math.ceil(currentMonth / 3);
+
+        switch (currentQuarter) {
+            case 1:
+                $("input[title='Quarter 1 Plan']").prop("disabled", false);
+                break;
+            case 2:
+                $("input[title='Quarter 2 Plan']").prop("disabled", false);
+                break;
+            case 3:
+                $("input[title='Quarter 3 Plan']").prop("disabled", false);
+                break;
+            case 4:
+                $("input[title='Quarter 4 Plan']").prop("disabled", false);
+                break;
+        }
+
+        // Check if the assigned to column is equal to the currently logged user
+        var assignedToColumn = $("div[title='Assigned To'] .ms-entity-resolved");
+        var currentUser = _spPageContextInfo.userDisplayName;
+
+        if (assignedToColumn.text() === currentUser) {
+            // Enable additional columns or perform other actions based on your requirements
+            // Example: $("input[title='Additional Column']").prop("disabled", false);
+        }
+    }
+
+    // Execute the functions when the page has fully loaded
+    $(document).ready(function () {
+        // Ensure jQuery is loaded before using it
+        if (typeof jQuery != 'undefined') {
+            // Disable all columns initially
+            disableAllColumns();
+
+            // Enable columns based on conditions
+            enableColumnBasedOnConditions();
+        } else {
+            console.log('jQuery not found. Make sure it is loaded before this script.');
+        }
+    });
+</script>
+```
+
+This script now checks whether the current date is within the quarter plus 10 days and if the "Assigned To" column matches the currently logged user. Adjust the column titles and conditions based on your SharePoint setup and requirements.
+
+
+
+/////////
+
 <script type="text/javascript">
     // Function to disable all columns initially
     function disableAllColumns() {
