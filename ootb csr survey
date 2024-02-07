@@ -1,0 +1,61 @@
+
+Creating an Out-of-the-Box (OOTB) survey form in SharePoint 2013 using Script Editor involves several steps. Here, I'll guide you through creating a basic survey form using SharePoint's built-in functionality. Additionally, I'll provide an example of Client-Side Rendering (CSR) for customizing the survey form.
+
+### OOTB Survey Form:
+
+1. **Create a Survey:**
+   - Navigate to your SharePoint site.
+   - Click on "Site Contents" and then "add an app."
+   - Choose "Survey" from the list of apps.
+
+2. **Configure the Survey:**
+   - Provide a name for your survey and click "Create."
+   - Add questions to the survey.
+
+3. **Add Script Editor Web Part:**
+   - Edit the survey page.
+   - Add the Script Editor web part.
+   - In the Script Editor, you can add HTML and JavaScript for customization.
+
+### CSR Survey Form:
+
+1. **Edit Survey Page:**
+   - Edit the survey page.
+   - Add a Script Editor web part.
+
+2. **Write CSR Code:**
+   - Add the following CSR code to customize the survey form. This example removes the "Title" column and adds custom formatting to the survey response options.
+
+    ```html
+    <script type="text/javascript">
+        (function () {
+            // Create a new rendering context
+            var ctx = {};
+            ctx.Templates = {};
+            ctx.Templates.Fields = {
+                // Customize the rendering for the "Title" field (remove it)
+                'Title': { 'View': function () { return ''; } },
+
+                // Customize the rendering for a choice field (example: "Response")
+                'Response': {
+                    'View': function (ctx) {
+                        // Add custom formatting for choice field
+                        return '<div style="margin-bottom: 10px;">' +
+                            '<input type="radio" name="responseOption" value="' + ctx.CurrentItem.Title + '">' +
+                            '<label style="margin-left: 5px;">' + ctx.CurrentItem.Title + '</label>' +
+                            '</div>';
+                    }
+                }
+            };
+            // Register the rendering template
+            SPClientTemplates.TemplateManager.RegisterTemplateOverrides(ctx);
+        })();
+    </script>
+    ```
+
+   Modify the CSR code according to your requirements.
+
+3. **Save and Publish:**
+   - Save and publish the changes.
+
+This is a basic example, and you can extend the CSR code to fit your specific needs. CSR allows for a high degree of customization, so you can tailor the survey form to your preferences.
