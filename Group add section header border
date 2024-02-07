@@ -1,0 +1,59 @@
+Certainly! To achieve your goal of grouping questions in a SharePoint 2013 survey app and adding section headers with borders and background colors using the script editor or content editor, you can follow these steps:
+
+1. **Edit the Survey Page:**
+   - Navigate to the survey page where you want to apply these changes.
+   - Click on the "Page" tab in the ribbon and then select "Edit Page."
+
+2. **Add Script Editor or Content Editor Web Part:**
+   - Add a Script Editor or Content Editor web part to the page.
+   - Click on the web part zone where you want to add the web part, then choose "Script Editor" or "Content Editor" from the web part options.
+
+3. **Edit the Web Part:**
+   - Edit the web part and add the following HTML and CSS code:
+
+```html
+<style>
+  /* Style for the section headers */
+  .section-header {
+    background-color: #e0e0e0; /* Set your desired background color */
+    padding: 10px;
+    border: 1px solid #999; /* Set your desired border color */
+    font-weight: bold;
+  }
+
+  /* Style for the individual questions */
+  .question-container {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc; /* Set your desired border color */
+  }
+</style>
+
+<div id="questionGroup1" class="section-header">Section 1: Questions 1 and 2</div>
+<div class="question-container">
+  <!-- Your Question 1 goes here -->
+  <!-- Example: <p>Question 1: What is your question?</p> -->
+</div>
+<div class="question-container">
+  <!-- Your Question 2 goes here -->
+  <!-- Example: <p>Question 2: What is your question?</p> -->
+</div>
+
+<div id="questionGroup2" class="section-header">Section 2: Questions 3 and 4</div>
+<div class="question-container">
+  <!-- Your Question 3 goes here -->
+  <!-- Example: <p>Question 3: What is your question?</p> -->
+</div>
+<div class="question-container">
+  <!-- Your Question 4 goes here -->
+  <!-- Example: <p>Question 4: What is your question?</p> -->
+</div>
+```
+
+4. **Customize the Code:**
+   - Replace the placeholder comments (`<!-- Your Question X goes here -->`) with your actual survey questions.
+
+5. **Save and Exit:**
+   - Save the changes to the web part and exit the page editing mode.
+
+This code creates two sections with headers, grouping questions 1 and 2 in the first section and questions 3 and 4 in the second section. You can adjust the CSS styles (background color, border color, padding, etc.) to match your design preferences.
