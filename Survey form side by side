@@ -1,0 +1,56 @@
+To achieve the desired layout in SharePoint 2013 survey app by moving questions side by side, you can use custom CSS with the help of a Script Editor or Content Editor web part. Follow these steps:
+
+1. **Add a Script Editor or Content Editor Web Part:**
+   - Edit the page where your survey is located.
+   - Add a Script Editor or Content Editor web part to the page.
+
+2. **Insert Custom CSS:**
+   - Edit the Script Editor or Content Editor web part.
+   - Insert the following CSS code:
+
+    ```css
+    <style type="text/css">
+        /* Adjust the width as needed */
+        .ms-formtable tr {
+            display: flex;
+        }
+
+        .ms-formtable td {
+            flex: 1;
+            box-sizing: border-box;
+        }
+    </style>
+    ```
+
+3. **Identify the Questions' IDs:**
+   - Right-click on the question you want to move, and select "Inspect" or "Inspect Element" from your browser. This will open the browser's developer tools.
+   - Look for the `id` attribute of the HTML element corresponding to each question. It will look something like `id="..."`. Note down the IDs for Question 1, Question 2, Question 3, and Question 4.
+
+4. **Adjust the CSS for Specific Questions:**
+   - Edit the Script Editor or Content Editor web part.
+   - Modify the CSS code to target the specific questions and move them side by side:
+
+    ```css
+    <style type="text/css">
+        /* Adjust the width as needed */
+        .ms-formtable tr {
+            display: flex;
+        }
+
+        #YOUR_QUESTION_1_ID,
+        #YOUR_QUESTION_2_ID,
+        #YOUR_QUESTION_3_ID,
+        #YOUR_QUESTION_4_ID {
+            flex: 1;
+            box-sizing: border-box;
+        }
+    </style>
+    ```
+
+   - Replace `YOUR_QUESTION_1_ID`, `YOUR_QUESTION_2_ID`, `YOUR_QUESTION_3_ID`, and `YOUR_QUESTION_4_ID` with the actual IDs you noted down for each question.
+
+5. **Save and Check:**
+   - Save the changes to the Script Editor or Content Editor web part.
+   - Check the page to see if the questions are now displayed side by side.
+
+Please note that this solution assumes that the survey questions are arranged in a table structure. If the structure of your survey is different, you might need to adjust the CSS accordingly. Additionally, make sure to test the changes in a safe environment before applying them to a production site.
