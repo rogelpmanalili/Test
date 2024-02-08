@@ -1,0 +1,24 @@
+
+I understand, and I apologize for the confusion. If you want both questions to appear on the same row, you can modify the script accordingly. Here's an updated script:
+
+```html
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script type="text/javascript">
+  $(document).ready(function(){
+    // Find the TRs for Question 1 and Question 2
+    var question1LabelTr = $("td.ms-formlabel:contains('Question 1')").closest('tr');
+    var question1BodyTr = $("td.ms-formbody:contains('Question 1')").closest('tr');
+    
+    var question2LabelTd = $("td.ms-formlabel:contains('Question 2')").closest('td');
+    var question2BodyTd = $("td.ms-formbody:contains('Question 2')").closest('td');
+    
+    // Append Question 2 TDs to the Question 1 TRs
+    question1LabelTr.append(question2LabelTd);
+    question1BodyTr.append(question2BodyTd);
+  });
+</script>
+```
+
+This script appends the `<td>` elements containing Question 2's label and body to the `<tr>` elements of Question 1, effectively placing them side by side.
+
+Please replace 'Question 1' and 'Question 2' with the actual text of your survey questions. Make sure that jQuery is properly referenced, and you have the necessary permissions for script editing in your SharePoint environment. If there are any issues, check the browser console for error messages. Adjust the code as needed based on your specific survey form structure.
