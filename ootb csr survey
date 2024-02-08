@@ -1,4 +1,29 @@
 
+If the questions are structured in two separate rows, one with the class `ms-formlabel` and the other with the class `ms-formbody`, you can use jQuery to move the elements accordingly. Here's an example script:
+
+```html
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script type="text/javascript">
+  $(document).ready(function(){
+    // Find the TRs for Question 1 and Question 2
+    var question1LabelTr = $("td.ms-formlabel:contains('Question 1')").closest('tr');
+    var question1BodyTr = $("td.ms-formbody:contains('Question 1')").closest('tr');
+    
+    var question2LabelTr = $("td.ms-formlabel:contains('Question 2')").closest('tr');
+    var question2BodyTr = $("td.ms-formbody:contains('Question 2')").closest('tr');
+    
+    // Move Question 2 TRs next to Question 1 TRs
+    question1LabelTr.after(question2LabelTr);
+    question1BodyTr.after(question2BodyTr);
+  });
+</script>
+```
+
+Replace 'Question 1' and 'Question 2' with the actual text of your survey questions. This script finds the corresponding `ms-formlabel` and `ms-formbody` rows for each question and moves the rows for Question 2 next to the rows for Question 1.
+
+Make sure that jQuery is properly referenced and that you have the necessary permissions for script editing in your SharePoint environment. If there are any issues, check the browser console for error messages. Adjust the code as needed based on your specific survey form structure.
+
+
 If you're encountering issues with `SPClientTemplates` being undefined in SharePoint 2013, it may be due to the order in which your scripts are loaded or a missing reference to the required SharePoint JavaScript libraries.
 
 Here's a revised script that includes the proper loading sequence and checks for the existence of `SPClientTemplates`:
