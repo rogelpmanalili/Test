@@ -1,0 +1,48 @@
+Certainly! To create scrolling text in an upward direction, you can use HTML and CSS. Below is a simple example:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upward Scrolling Text</title>
+  <style>
+    .scrolling-container {
+      height: 100px; /* Set the height of the container */
+      overflow: hidden; /* Hide the overflow content */
+      position: relative;
+    }
+
+    .scrolling-text {
+      position: absolute;
+      top: 100%; /* Initially position text below the container */
+      animation: scroll-up 10s linear infinite; /* Adjust the duration as needed */
+    }
+
+    @keyframes scroll-up {
+      0% { top: 100%; }
+      100% { top: -100%; } /* Move text to the top */
+    }
+  </style>
+</head>
+<body>
+
+<div class="scrolling-container">
+  <div class="scrolling-text">
+    <!-- Your scrolling text goes here -->
+    <p>This is an example of upward scrolling text.</p>
+  </div>
+</div>
+
+</body>
+</html>
+```
+
+In this example:
+
+- Adjust the `height` property in the `.scrolling-container` class to set the height of the scrolling area.
+- The text is initially positioned below the container (`top: 100%`), and the `@keyframes` animation gradually moves it to the top (`top: -100%`), creating the upward scrolling effect.
+- You can modify the content inside the `.scrolling-text` div to display your desired text.
+
+Feel free to customize the styles and animation duration according to your preferences.
