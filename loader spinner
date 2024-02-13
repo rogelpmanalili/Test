@@ -47,3 +47,51 @@ And your JavaScript code would be:
 ```
 
 This example assumes you have a loading spinner with the class `spinner-border`. Adjust the spinner class or styling based on your preferred spinner implementation.
+
+
+--------
+
+Certainly! To achieve this in SharePoint 2013 NewForm using CSR (Client Side Rendering) and JavaScript, you can follow these steps:
+
+1. Add a script reference to jQuery in your NewForm page (if not already added):
+
+```html
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+```
+
+2. Add the following JavaScript code to your NewForm page:
+
+```javascript
+// Add a reference to jQuery before using this code
+$(document).ready(function () {
+    // Show loader when the page is loading
+    showLoader();
+
+    // Call your custom functions or perform any operations here
+    // For example, if you have custom JavaScript functions, call them here
+
+    // Once your operations are complete, hide the loader
+    hideLoader();
+});
+
+function showLoader() {
+    // Create and show loader
+    var loaderHtml = '<div id="customLoader" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.8); text-align: center; z-index: 9999;">' +
+        '<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">' +
+        '<img src="/_layouts/15/images/loadingcirclests16.gif" alt="Loading..." />' +
+        '<p>Loading...</p>' +
+        '</div>' +
+        '</div>';
+
+    $('body').append(loaderHtml);
+}
+
+function hideLoader() {
+    // Hide loader
+    $('#customLoader').remove();
+}
+```
+
+Make sure to replace the loader image path (`/layouts/15/images/loadingcirclests16.gif`) with the correct path for your SharePoint environment.
+
+This script will display a loader when the NewForm page is loading and hide it when your custom operations are complete. Adjust the CSS and loader content as needed.
