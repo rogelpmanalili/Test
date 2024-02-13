@@ -1,0 +1,49 @@
+
+Certainly! You can include a loading spinner within your loader div. Here's an updated example with a simple loading spinner:
+
+```html
+<div id="customLoader" style="display: none; text-align: center;">
+    <!-- Loading spinner -->
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    <p>Loading...</p>
+</div>
+```
+
+And your JavaScript code would be:
+
+```javascript
+(function () {
+    // Your custom code for loader display
+    function showLoader() {
+        var loaderDiv = document.getElementById('customLoader');
+        loaderDiv.style.display = 'block'; // Adjust styling as needed
+    }
+
+    // Your custom code for loader hiding
+    function hideLoader() {
+        var loaderDiv = document.getElementById('customLoader');
+        loaderDiv.style.display = 'none';
+    }
+
+    // Override the default NewForm rendering
+    var overrideContext = {};
+    overrideContext.Templates = {};
+
+    // PreRender function - show loader before rendering the form
+    overrideContext.OnPreRender = function () {
+        showLoader();
+    };
+
+    // PostRender function - hide loader after rendering the form
+    overrideContext.OnPostRender = function () {
+        hideLoader();
+    };
+
+    // Register the template overrides
+    SPClientTemplates.TemplateManager.RegisterTemplateOverrides(overrideContext);
+})();
+```
+
+This example assumes you have a loading spinner with the class `spinner-border`. Adjust the spinner class or styling based on your preferred spinner implementation.
