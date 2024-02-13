@@ -1,3 +1,36 @@
+Certainly, you can achieve that by chaining the functions in the `onclick` event. Here's an example:
+
+```javascript
+<script type="text/javascript">
+    ExecuteOrDelayUntilScriptLoaded(function () {
+        var attachCancelButton = document.getElementById("attachcancelbutton");
+
+        if (attachCancelButton) {
+            // Store the existing onclick function
+            var existingOnClick = attachCancelButton.onclick;
+
+            // Add your custom function along with the existing one
+            attachCancelButton.onclick = function () {
+                if (existingOnClick) {
+                    existingOnClick(); // Call the existing onclick function
+                }
+
+                yourCustomFunction(); // Call your custom function
+            };
+        }
+    }, "sp.js");
+
+    function yourCustomFunction() {
+        // Your custom code here
+        console.log("Custom function executed!");
+    }
+</script>
+```
+
+This way, you preserve the existing `onclick` event and add your custom function to be executed along with it when the "Cancel" button is clicked.
+
+___________
+
 To achieve the functionality you're describing, where clicking the "Cancel" button in the "Attach File" dialog triggers a custom function (`cancelattach()`) to hide/show an element, you can modify your JavaScript as follows:
 
 ```javascript
