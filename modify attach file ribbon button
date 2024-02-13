@@ -1,0 +1,42 @@
+If you want to modify the default "Attach File" ribbon button in SharePoint 2013 using JavaScript, you can use the SharePoint JavaScript Object Model (JSOM) to attach a custom function to the button click event. Here's an example:
+
+```javascript
+<script type="text/javascript">
+    // Function to modify the Attach File button
+    function modifyAttachFileButton() {
+        // Get the Attach File button by its ID
+        var attachFileButton = document.getElementById("Ribbon.ListForm.Edit.Actions.AttachFile-Large");
+
+        // Check if the button is found
+        if (attachFileButton) {
+            // Attach a custom function to the button click event
+            attachFileButton.onclick = function () {
+                // Your custom logic here
+                openAttachmentDialog(); // Call your custom function or logic
+            };
+        }
+    }
+
+    // Function to open attachment dialog
+    function openAttachmentDialog() {
+        var options = {
+            url: _spPageContextInfo.webAbsoluteUrl + "/_layouts/15/AttachFile.aspx?ListId={ListId}&ItemId=" + GetUrlKeyValue("ID"),
+            width: 600,
+            height: 400,
+            dialogReturnValueCallback: function (result, returnValue) {
+                if (result === SP.UI.DialogResult.OK) {
+                    // Logic to execute after attachment upload (if needed)
+                }
+            }
+        };
+        SP.UI.ModalDialog.showModalDialog(options);
+    }
+
+    // Run the modification function on page load
+    window.onload = modifyAttachFileButton;
+</script>
+```
+
+This script targets the default "Attach File" button in the ribbon and attaches a custom function (`openAttachmentDialog` in this example) to its click event. Ensure that you include this script after the SharePoint scripts in the page.
+
+Remember to test this in a development environment before applying it to production, as SharePoint customizations can have unexpected consequences.
