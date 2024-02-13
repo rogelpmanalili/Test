@@ -1,3 +1,46 @@
+To achieve the functionality you're describing, where clicking the "Cancel" button in the "Attach File" dialog triggers a custom function (`cancelattach()`) to hide/show an element, you can modify your JavaScript as follows:
+
+```javascript
+<script type="text/javascript">
+    // Function to open attachment dialog
+    function openAttachmentDialog() {
+        var options = {
+            url: _spPageContextInfo.webAbsoluteUrl + "/_layouts/15/AttachFile.aspx?ListId={ListId}&ItemId=" + GetUrlKeyValue("ID"),
+            width: 600,
+            height: 400,
+            dialogReturnValueCallback: function (result, returnValue) {
+                if (result === SP.UI.DialogResult.OK) {
+                    // Logic to execute after attachment upload (if needed)
+                } else if (result === SP.UI.DialogResult.cancel) {
+                    // If 'Cancel' button is clicked
+                    cancelattach();
+                }
+            }
+        };
+        SP.UI.ModalDialog.showModalDialog(options);
+    }
+
+    // Custom function to hide/show an element
+    function cancelattach() {
+        var elementToHideShow = document.getElementById('yourElementId'); // Replace with your element ID
+        if (elementToHideShow) {
+            if (elementToHideShow.style.display === 'none') {
+                elementToHideShow.style.display = 'block';
+            } else {
+                elementToHideShow.style.display = 'none';
+            }
+        }
+    }
+</script>
+```
+
+Replace `'yourElementId'` with the actual ID of the element you want to hide/show. Make sure to include this script after the SharePoint scripts on your NewForm page.
+
+This script will trigger the `cancelattach()` function when the "Cancel" button in the "Attach File" dialog is clicked, and it will handle hiding/showing the specified element accordingly.
+
+
+//////////
+
 If you want to modify the default "Attach File" ribbon button in SharePoint 2013 using JavaScript, you can use the SharePoint JavaScript Object Model (JSOM) to attach a custom function to the button click event. Here's an example:
 
 ```javascript
