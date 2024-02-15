@@ -1,0 +1,49 @@
+is below code logic correct? when it should be executed if i inserted it in the script editor? 
+
+if the logic is not correct or well structured, please improve and optimize. or provide a better functional code.
+
+description of the intented purpose:
+in sharepoint 2013, when a user load/open the editform.aspx, the code below will be executed to check if the currently logged user matches his name as an approver and check the approval status. note that apm focal point name will appear three times. analysis assigned engineer name will appear two times in the form.
+
+function validate() {
+if (initiatormanager==currentlyloggeduser && initiatormanagerapproval=="" && apmfocalpointapproval=="")
+{
+\\enable controls
+}
+else if (apmfocalpoint==currentlyloggeduser && apmfocalpointapproval=="" && initiatormanagerapproval=="accepted")
+{
+\\enable controls
+}
+else if (analysisassigneddepartmentsrmanager==currentlyloggeduser && analysisassigneddepartmentsrmanagerapproval=="" && apmfocalpointapproval=="accepted")
+{
+\\enable controls
+}
+else if (analysisassignedengineer==currentlyloggeduser && analysisassignedengineerapproval=="" && analysisassigneddepartmentsrmanagerapproval=="accepted")
+{
+\\enable controls
+}
+else if (analysisassignedengineerdirectmanager==currentlyloggeduser && analysisassignedengineerdirectmanagerapproval=="" && analysisassignedengineerapproval=="assigned")
+{
+\\enable controls
+}
+else if (apmfocalpointstage2==currentlyloggeduser && apmfocalpointstage2approval=="" && apmfocalpointapproval=="accepted" && analysisassignedengineerdirectmanagerapproval=="accepted")
+{
+\\enable controls
+}
+else if (recommendationassignedsrmanager==currentlyloggeduser && recommendationassignedsrmanagerapproval=="" && apmfocalpointstage2approval=="accepted")
+{
+\\enable controls
+}
+else if (recommendationassignedengineer==currentlyloggeduser && recommendationassignedengineerapproval=="" && recommendationassignedsrmanagerapproval=="accepted")
+{
+\\enable controls
+}
+else if (analysisassignedengineerstage2==currentlyloggeduser && analysisassignedengineerstage2approval=="" && analysisassignedengineerapproval=="assigned" &&  recommendationassignedengineerapproval=="implemented")
+{
+\\enable controls
+}
+else if (apmfocalpointstage3==currentlyloggeduser && apmfocalpointstage3approval=="" && apmfocalpointapproval=="accepted" && apmfocalpointstage2approval=="accepted" && analysisassignedengineerstage2approval=="accepted")
+{
+\\enable controls
+}
+}
