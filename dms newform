@@ -1,0 +1,1052 @@
+<head>
+<style type="text/css">
+#embeddingText { height: 500px; }
+/* SABIC Typeface Text */
+/*body, h1, h2, h3, h4, h5, h6, p, a, span, input, select, textarea {
+ font-family: SABIC Typeface Text Light, sans-serif !important;
+}*/
+
+table,  tr, td {
+ font-family: SABIC Typeface Text Light, sans-serif !important;
+}
+
+#part1 {
+    display:none !important;
+}
+
+.bdy_bg,s4-notdlg {
+display:none !important;
+}
+.sabicheader {
+display:none !important;
+}
+
+#sideNavBox {
+ display: none !important;
+}
+
+#contentBox {
+margin-left:0px !important;
+ background-color:transparent !important;
+/* border:solid  transparent !important; */
+ border-right-width:0px !important;
+ border-bottom-width:0px !important;
+ border-left-width:0px !important;
+}
+
+.ms-core-sideNavBox-removeLeftMargin {
+display: none !important;
+background: transparent !important;
+border: 0 !important;
+}
+
+#pageTitle{
+display:none;
+}
+
+</style type="text/css">
+
+<style>
+.mainTable{
+border-style: solid; 
+border-color: inherit; 
+border-width: 1px; 
+box-shadow: 0px 0px 10px 5px rgba(68,68,68,0.6);
+padding: 30px;
+}
+
+.sectionHeader {
+background-color: #009fdf;
+height: 30px;
+color: #e6e7e8;
+font-size: 1.5em;
+}
+
+.dmsTitle {
+font-size: 2em;
+}
+
+.headWidth {
+width: 33%;
+}
+.sectionHeaderTable {
+width: 100%;
+}
+
+.unitedlogo {
+text-align: center;
+padding: 10px;
+}
+
+.headingTable {
+width: 100%;
+border-collapse: collapse;
+}
+
+.initiatorTable {
+width: 100%;
+}
+
+.approvalTable {
+width: 100%;
+}
+
+.recommendationTable {
+width: 100%;
+}
+
+.tableHeader {
+font-weight: bold;
+}
+
+.cellAlignCenter {
+text-align: center;
+}
+
+#initiatorapprovaldetailsTable tr:nth-child(odd) {
+	background-color: #e6e7e8;
+}
+
+#initiatorapprovaldetailsTable tr:nth-child(even) {
+	background-color: #ffffff;
+}
+
+#defectDetails tr:nth-child(odd) {
+	background-color: #e6e7e8;
+}
+
+#defectDetails tr:nth-child(even) {
+	background-color: #ffffff;
+}
+
+#recommendationdetailsTable tr:nth-child(odd) {
+	background-color: #e6e7e8;
+}
+
+#recommendationdetailsTable tr:nth-child(even) {
+	background-color: #ffffff;
+}
+
+.recommendationdetailsHeaderBgColor {
+background-color: #c6c8ca;
+}
+
+</style>
+
+<style type="text/css">
+#contentRow {
+padding-top:0px !important;
+padding-left:0px !important;
+}
+
+.bdy_bg,s4-notdlg {
+display:none !important;
+}
+.sabicheader {
+display:none !important;
+}
+
+#sideNavBox {
+ display: none !important;
+}
+
+#contentBox {
+margin-left:0px !important;
+ background-color:transparent !important;
+/* border:solid  transparent !important; */
+ border-right-width:0px !important;
+ border-bottom-width:0px !important;
+ border-left-width:0px !important;
+}
+
+.ms-core-sideNavBox-removeLeftMargin {
+display: none !important;
+background: transparent !important;
+border: 0 !important;
+}
+</style>
+
+<script type="text/javascript">
+/* display loader only if JavaScript is enabled, no JS-lib loaded at this point */
+document.write('<div id="loader" style="display:table; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10000; background: #fff;">'
+    + '<div style="display:table-cell; vertical-align:top; text-align: center; font-size:3.0em;font-family:Segoe UI Light,Segoe UI,Segoe,Tahoma,Helvetica,Arial,sans-serif;">'
+    + '<img src="http://intranet.sabic.com//sites/sabic/_catalogs/masterpage/Digital%20Experience/images/loader.gif" /> Working on it... <br />'
+    + '</div></div>');
+</script>
+
+</head>
+
+<body>
+<!-- at the bottom of you HTML (right before closing BODY-tag) -->
+
+<script src="jquery.min.js"></script>
+<script type="text/javascript">
+/* hide the loading-message */
+$(window).load(function(){
+$('#loader').fadeOut(1000);$(this).scrollTop(0);
+});
+</script>
+</body>
+
+<script type="text/javascript">
+window.onload = function () {
+var currentUser = document.getElementById("SuiteNavUserName").innerText.trim();
+var staticAdminName = "Manalili, Rogel Pamintuan";
+if (currentUser !== staticAdminName) {
+hideRibbonRow();
+}
+};
+
+function hideRibbonRow() {
+var RibbonRow = document.getElementById("s4-ribbonrow");
+RibbonRow.style.display = "none";
+var gearIcon = document.getElementById("O365_MainLink_Settings");
+gearIcon.style.display = "none";
+}
+</script>
+
+<script type="text/javascript">
+var refno=''
+//$(document).ready(function () { ExecuteOrDelayUntilScriptLoaded(load, "sp.js"); });
+
+$(document).ready(function() {
+           SP.SOD.executeFunc('clientpeoplepicker.js', 'SPClientPeoplePicker',function(){
+           setTimeout(function(){loadname();},1000);
+        });
+});
+
+function loadname(){
+PopulateNames()
+}
+
+function PopulateNames() {
+
+	var userid=_spPageContextInfo.userId;
+	var requestUri = _spPageContextInfo.webAbsoluteUrl + "/_api/web/getuserbyid(" + userid + ")";
+	$.ajax({
+		 url: requestUri,
+		 method: "GET",
+		 headers: { "Accept": "application/json; odata=verbose" },
+		 success: function (data) {
+			var loginName = data.d.Title;
+			var Email = data.d.Email;
+			SetUserFieldValue("Initiator",Email);
+			$("a[class='sp-peoplepicker-delImage']")[0].disabled=true
+			$("a[class='sp-peoplepicker-delImage']")[0].style.visibility="hidden" 
+		 },
+		 error: function (data) {
+		 }
+	 });
+	//SetUserFieldValue("Reliability Approver","Joufabm@saudikayan.sabic.com");
+}
+
+function SetUserFieldValue(fieldName, userName) {
+var editorsInfo;
+var _PeoplePicker = $("div[title='" + fieldName + "']");
+var _PeoplePickerTopId = _PeoplePicker.attr('id');
+var _PeoplePickerEditer = $("input[title='" + fieldName + "']");
+_PeoplePickerEditer.val(userName);
+if(_PeoplePickerTopId != undefined) {	
+var _PeoplePickerOject = SPClientPeoplePicker.SPClientPeoplePickerDict[_PeoplePickerTopId];
+	_PeoplePickerOject.AddUnresolvedUserFromEditor(true);
+}
+}
+
+</script>
+
+<script type="text/javascript">
+// List Forms – User CSRListForm Server Tempalte 
+  
+(function () {  
+  
+    // Create object that have the context information about the field that we want to change it's output render   
+    var formTemplate = {}; 
+    formTemplate.Templates = {}; 
+    formTemplate.Templates.View = viewTemplate; 
+  
+    SPClientTemplates.TemplateManager.RegisterTemplateOverrides(formTemplate); 
+  
+})();  
+
+    // This function provides the rendering logic for the Custom Form 
+    function viewTemplate(ctx) { 
+
+var formTable = "".concat("",
+"<table border='1' class='mainTable'><tr><td>",
+
+    "<table border='1' class='headingTable' style=''>",
+        "<tr>",
+            "<!--td class='dmsTitle headWidth'><strong>DEFECT MANAGEMENT SYSTEM (DMS)</strong></td-->",
+            "<td rowspan='3' class='dmsTitle headWidth'><img src='http://unitedweb1.sabic.com/SAA/PublishingImages/DMS.png'></td>",
+            "<td class='cellAlignCenter headWidth'><strong>OMS 433 | OMS 422 | OMS 425</strong></td>",
+            "<td rowspan='3' class='unitedlogo headWidth'><img src='http://unitedweb1.sabic.com/SiteAssets/images/logo_UN.gif' class='' /></td>",
+        "</tr>",
+        "<tr>",
+            "<!--td class='' rowspan=2'><strong>Track Defects & Recommendations</strong></td-->",
+            "<td class='cellAlignCenter'>Page 1 of 1</td>",
+        "</tr>",
+        "<tr>",
+            "<td class='cellAlignCenter'>Rev. 01</td>",
+        "</tr>",
+    "</table>",
+
+    "<table border='1' class='sectionHeaderTable' style=''>",
+        "<tr>",
+        "<td class='sectionHeader'>DEFECT DETAILS / CLASSIFICATION</td>",
+        "</tr>",
+     "</table>",
+
+    "<table id='defectDetails' border='0' class='' style=''>",
+
+        "<tr>",
+            "<td class='' style=''><strong>Affected Plant:</strong></td>",
+            "<td class='' style='width: 291px;'>{{Affected_x0020_Plant_Ctrl}}</td>",
+            "<td class='' style=''><strong>DMS #: </strong> </td>",
+            "<td class='' style=''>{{Title_Ctrl}}</td>",
+        "</tr>",
+        "<tr>",
+            "<td class='' style=''><strong>Affected Equipment:</strong></td>",
+            "<td class='' style=''>{{Affected_x0020_Equipment_Ctrl}}</td>",
+            "<td class='' style=''><strong>Date of Incident: </strong> </td>",
+            "<td class='' style=''>{{Date_x0020_of_x0020_Incident_Ctrl}}</td>",
+        "</tr>",
+        "<tr>",
+            "<td class='' style=''><strong>Maintenance Cost of Incident (SAR):</strong></td>",
+            "<td class='' style=''>{{Maintenance_x0020_Cost_x0020_of__Ctrl}}</td>",
+            "<td class='' style=''><strong>Production Cost of Incident (SAR): </strong> </td>",
+            "<td class='' style=''>{{Production_x0020_Cost_x0020_of_x_Ctrl}}</td>",
+        "</tr>",
+        "<tr>",
+            "<td class='' style=''><strong>DMS Category:</strong></td>",
+            "<td class='' style=''>{{DMS_x0020_Category_Ctrl}}</td>",
+            "<td class='' style=''><strong>Classification: </strong> </td>",
+            "<td class='' style=''>{{Classification_Ctrl}}</td>",
+        "</tr>",
+        "<tr>",
+            "<td class='' style=''><strong>Details of Incident:</strong></td>",
+            "<td class='' style='' colspan='3'>{{Details_x0020_of_x0020_Incident_Ctrl}}</td>",
+        "</tr>",
+
+    "</table>",
+
+    "<table id='initiatorapprovaldetailsTable' border='0' class='sectionHeaderTable' style=''>",
+        "<tr>",
+	        "<td class='sectionHeader'>INITIATOR AND APPROVAL DETAILS</td>",
+        "</tr>",
+	"<tr><td>",
+	    "<table border='0' class='approvalTable' style=''>",
+
+	        "<tr>",
+	        "<td class='tableHeader'>Designation</td><td class='tableHeader'>Name</td><td class='tableHeader'>Status</td><td class='tableHeader'>Initiation / Approval Date</td>",
+	        "</tr>",
+
+	        "<tr>",
+	        "<td>Initiator</td><td>{{Initiator_Ctrl}}</td><td>{{Status_Ctrl}}</td><td>{{Initiator_x0020_Initiation_x0020_Ctrl}}</td>",
+	        "</tr>",
+	        "<tr>",
+	        "<td>Initiator Manager</td><td>{{Initiator_x0020_Manager_Ctrl}}</td><td>{{Initiator_x0020_Manager_x0020_Ap_Ctrl}}</td><td>{{Initiator_x0020_Manager_x0020_Ap0_Ctrl}}</td>",
+	        "</tr>",
+	        "<tr>",
+	        "<td>APM Focal Point (Stage 1)</td><td>{{APM_x0020_Focal_x0020_Point_Ctrl}}</td><td>{{APM_x0020_Focal_x0020_Point_x0021_Ctrl}}</td><td>{{APM_x0020_Focal_x0020_Point_x0024_Ctrl}}</td>",
+	        "</tr>",
+	        "<tr>",
+	        "<td>Analysis Assigned Department Sr. Manager</td><td>{{Analysis_x0020_Assigned_x0020_De_Ctrl}}</td><td>{{Analysis_x0020_Assigned_x0020_De0_Ctrl}}</td><td>{{Analysis_x0020_Assigned_x0020_De1_Ctrl}}</td>",
+	        "</tr>",
+	        "<tr>",
+	        "<td>Analysis Assigned Engineer (Stage 1)</td><td>{{Analysis_x0020_Assigned_x0020_En_Ctrl}}</td><td>{{Analysis_x0020_Assigned_x0020_En2_Ctrl}}</td><td>{{Analysis_x0020_Assigned_x0020_En5_Ctrl}}</td>",
+	        "</tr>",
+	        "<tr>",
+	        "<td>Analysis Assigned Engineer Direct Manager</td><td>{{Analysis_x0020_Assigned_x0020_En0_Ctrl}}</td><td>{{Analysis_x0020_Assigned_x0020_En3_Ctrl}}</td><td>{{Analysis_x0020_Assigned_x0020_En6_Ctrl}}</td>",
+	        "</tr>",
+	        "<tr>",
+	        "<td>APM Focal Point (Stage 2)</td><td>{{APM_x0020_Focal_x0020_Point_x002_Ctrl}}</td><td>{{APM_x0020_Focal_x0020_Point_x0022_Ctrl}}</td><td>{{APM_x0020_Focal_x0020_Point_x0025_Ctrl}}</td>",
+	        "</tr>",
+	        "<tr>",
+	        "<td>Recommendation Assigned Sr. Manager</td><td>{{Recommendation_x0020_Assigned_x0_Ctrl}}</td><td>{{Recommendation_x0020_Assigned_x01_Ctrl}}</td><td>{{Recommendation_x0020_Assigned_x03_Ctrl}}</td>",
+	        "</tr>",
+	        "<tr>",
+	        "<td>Recommendation Assigned Engineer</td><td>{{Recommendation_x0020_Assigned_x00_Ctrl}}</td><td>{{Recommendation_x0020_Assigned_x02_Ctrl}}</td><td>{{Recommendaion_x0020_Assigned_x00_Ctrl}}</td>",
+	        "</tr>",
+	        "<tr>",
+	        "<td>Analysis Assigned Engineer (Stage 2)</td><td>{{Analysis_x0020_Assigned_x0020_En1_Ctrl}}</td><td>{{Analysis_x0020_Assigned_x0020_En4_Ctrl}}</td><td>{{Analysis_x0020_Assigned_x0020_En7_Ctrl}}</td>",
+	        "</tr>",
+	        "<tr>",
+	        "<td>APM Focal Point (Stage 3)</td><td>{{APM_x0020_Focal_x0020_Point_x0020_Ctrl}}</td><td>{{APM_x0020_Focal_x0020_Point_x0023_Ctrl}}</td><td>{{APM_x0020_Focal_x0020_Point_x0026_Ctrl}}</td>",
+	        "</tr>",
+
+	     "</table>",
+	"</td></tr>",
+     "</table>",
+
+    "<table border='1' class='sectionHeaderTable recommendationTable' style='display: none;'>",
+        "<tr>",
+        "<td class='sectionHeader'>RELIABILITY RECOMMENDATION</td>",
+        "</tr>",
+
+	"<tr><td>",
+	    "<table border='0' class='recommendationTable' style=''>",
+	        "<tr>",
+	        "<td class='tableHeader'>Concerned Department</td><td>{{Concerned_x0020_Department_Ctrl}}</td><td class='tableHeader'>Assigned To</td><td>{{Assign_x0020_To_Ctrl}}</td>",
+	        "</tr>",
+
+	        "<tr>",
+	        "<td class='tableHeader'>Delegate</td><td>{{Delegate_Ctrl}}</td><td class='tableHeader'>Report Template</td><td><a href='#' onclick='underDevelopment()'>Download Analysis Template</a></td>",
+	        "</tr>",
+	        "<tr>",
+	        "<td class='tableHeader'>Report</td><td></td><td></td><td></td>",
+	        "</tr>",
+
+	     "</table>",
+	"</td></tr>",
+
+	"<tr><td>",
+	    "<table id='recommendationdetailsTable' border='1' class='recommendationTable' style=''>",
+	        "<tr>",
+	        "<td class='recommendationdetailsHeaderBgColor' colspan='5'>RECOMMENDATION DETAILS</td>",
+	        "</tr>",
+
+	        "<tr>",
+	        "<td class='tableHeader'>SI No</td><td class='tableHeader'>Recommendation</td><td class='tableHeader'>Implementation Department</td><td class='tableHeader'>Implementation Date</td><td class='tableHeader'>Status</td>",
+	        "</tr>",
+	        "<tr>",
+	        "<td>1</td><td>Recommendation 1</td><td>Field I Maintenance</td><td>05/02/2024</td><td>In Progress</td>",
+	        "</tr>",
+	        "<tr>",
+	        "<td>2</td><td>Recommendation 2</td><td>Project Support [PSD]</td><td>05/02/2024</td><td>Resolved</td>",
+	        "</tr>",
+	        "<tr>",
+	        "<td>3</td><td>Recommendation 3</td><td>Process Engineering</td><td>05/02/2024</td><td>In Progress</td>",
+	        "</tr>",
+
+	     "</table>",
+	"</td></tr>",
+
+     "</table>",
+
+    "<table border='0' class='sectionHeaderTable' style=''>",
+        "<tr>",
+        "<td id='reportsattachments' class='sectionHeader'>REPORTS / ATTACHMENTS</td>",
+        "</tr>",
+        "<tr>",
+        "<td>{{Attachments_Ctrl}}</td>",
+        "</tr>",
+
+        "<tr><td style='text-align:right; border-style:none; border-top-style: solid; border-top-width: 1px; border-top-color: #939598; padding: 5px;'><input id='btnSave' type='button' value='Save' onclick=\"if (!PreSaveItem()) return false;if (SPClientForms.ClientFormManager.SubmitClientForm('{{FormId}}')) return false;WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions('{{SaveButtonName}}','', true, '', '', false, true))\" style='margin-gt; background-color: #009fdf; color: #fff !important; font-size: 15px !important;'><span class='ms-SpaceBetButtons'></span><input id='btnCancel' type='button' value='Cancel' onclick='cancelItem()' class='ms-ButtonHeightWidth' style='margin-gt; background-color: #009fdf; color: #fff !important; font-size: 15px !important;'><!--span class='ms-SpaceBetButtons'></span--><!--input id='btnAttachfile' type='button' value='Attach File' onclick='javascript:UploadAttachment();' class='ms-ButtonHeightWidth' style='margin-gt; background-color: #009fdf; color: #fff !important; font-size: 15px !important;'--></td>",
+        "</tr>",
+
+"<tr style='display: none;'>",
+"<td 'style='text-align:right;'><a class='ms-cui-ctl-large' id='Ribbon.ListForm.Edit.Commit.Publish-Large' role='button' aria-describedby='Ribbon.ListForm.Edit.Commit.Publish_ToolTip' onclick='return false;' href='javascript:;' unselectable='on' mscui:controltype='Button'><span class='ms-cui-ctl-largeIconContainer' unselectable='on'><span class=' ms-cui-img-32by32 ms-cui-img-cont-float ms-cui-imageDisabled' unselectable='on'><img style='left: -511px; top: -35px;' src='/_layouts/15/1033/images/formatmap32x32.png?rev=40' unselectable='on'></span></span><span class='ms-cui-ctl-largelabel' unselectable='on'>Save</span></a><span class='ms-SpaceBetButtons'></span><a class='ms-cui-ctl-large' id='Ribbon.ListForm.Edit.Commit.Cancel-Large' role='button' aria-describedby='Ribbon.ListForm.Edit.Commit.Cancel_ToolTip' onclick='return false;' href='javascript:;' unselectable='on' mscui:controltype='Button'><span class='ms-cui-ctl-largeIconContainer' unselectable='on'><span class=' ms-cui-img-32by32 ms-cui-img-cont-float ms-cui-imageDisabled' unselectable='on'><img style='left: -511px; top: -511px;' src='/_layouts/15/1033/images/formatmap32x32.png?rev=40' unselectable='on'></span></span><span class='ms-cui-ctl-largelabel' unselectable='on'>Cancel</span></a><span class='ms-SpaceBetButtons'></span><a class='ms-cui-ctl-large' id='Ribbon.ListForm.Edit.Actions.AttachFile-Large' role='button' aria-describedby='Ribbon.ListForm.Edit.Actions.AttachFile_ToolTip' onclick='return false;' href='javascript:;' unselectable='on' mscui:controltype='Button'><span class='ms-cui-ctl-largeIconContainer' unselectable='on'><span class=' ms-cui-img-32by32 ms-cui-img-cont-float ms-cui-imageDisabled' unselectable='on'><img style='left: -443px; top: -205px;' src='/_layouts/15/1033/images/formatmap32x32.png?rev=40' unselectable='on'></span></span><span class='ms-cui-ctl-largelabel' unselectable='on'>Attach<br>File</span></a>",
+"</td>",
+"</tr>",
+
+"<tr style='display: none;'>",
+"<td 'style='text-align:right;'><ul><li class='ms-cui-group' id='Ribbon.ListForm.Edit.Commit' style='background-color: ;' unselectable='on'><span class='ms-cui-groupContainer' unselectable='on'><span class='ms-cui-groupBody' unselectable='on'><span class='ms-cui-layout' id='Ribbon.ListForm.Edit.Commit-LargeLarge' unselectable='on'><span class='ms-cui-section' id='Ribbon.ListForm.Edit.Commit-LargeLarge-0' unselectable='on'><span class='ms-cui-row-onerow' id='Ribbon.ListForm.Edit.Commit-LargeLarge-0-0' unselectable='on'><a class='ms-cui-ctl-large' id='Ribbon.ListForm.Edit.Commit.Publish-Large' role='button' aria-describedby='Ribbon.ListForm.Edit.Commit.Publish_ToolTip' onclick='return false;' href='javascript:;' unselectable='on' mscui:controltype='Button'><span class='ms-cui-ctl-largeIconContainer' unselectable='on'><span class=' ms-cui-img-32by32 ms-cui-img-cont-float ms-cui-imageDisabled' unselectable='on'><img style='left: -511px; top: -35px;' src='/_layouts/15/1033/images/formatmap32x32.png?rev=40' unselectable='on'></span></span><span class='ms-cui-ctl-largelabel' unselectable='on'>Save</span></a><a class='ms-cui-ctl-large' id='Ribbon.ListForm.Edit.Commit.Cancel-Large' role='button' aria-describedby='Ribbon.ListForm.Edit.Commit.Cancel_ToolTip' onclick='return false;' href='javascript:;' unselectable='on' mscui:controltype='Button'><span class='ms-cui-ctl-largeIconContainer' unselectable='on'><span class=' ms-cui-img-32by32 ms-cui-img-cont-float ms-cui-imageDisabled' unselectable='on'><img style='left: -511px; top: -511px;' src='/_layouts/15/1033/images/formatmap32x32.png?rev=40' unselectable='on'></span></span><span class='ms-cui-ctl-largelabel' unselectable='on'>Cancel</span></a></span></span></span></span><span class='ms-cui-groupTitle' unselectable='on'>Commit</span></span><span class='ms-cui-groupSeparator' unselectable='on'></span></li><li class='ms-cui-group' id='Ribbon.ListForm.Edit.Actions' style='background-color: ;' unselectable='on'><span class='ms-cui-groupContainer' unselectable='on'><span class='ms-cui-groupBody' unselectable='on'><span class='ms-cui-layout' id='Ribbon.ListForm.Edit.Actions-LargeLarge' unselectable='on'><span class='ms-cui-section' id='Ribbon.ListForm.Edit.Actions-LargeLarge-0' unselectable='on'><span class='ms-cui-row-onerow' id='Ribbon.ListForm.Edit.Actions-LargeLarge-0-0' unselectable='on'><a class='ms-cui-ctl-large' id='Ribbon.ListForm.Edit.Actions.AttachFile-Large' role='button' aria-describedby='Ribbon.ListForm.Edit.Actions.AttachFile_ToolTip' onclick='return false;' href='javascript:;' unselectable='on' mscui:controltype='Button'><span class='ms-cui-ctl-largeIconContainer' unselectable='on'><span class=' ms-cui-img-32by32 ms-cui-img-cont-float ms-cui-imageDisabled' unselectable='on'><img style='left: -443px; top: -205px;' src='/_layouts/15/1033/images/formatmap32x32.png?rev=40' unselectable='on'></span></span><span class='ms-cui-ctl-largelabel' unselectable='on'>Attach<br>File</span></a></span></span></span></span><span class='ms-cui-groupTitle' unselectable='on'>Actions</span></span><span class='ms-cui-groupSeparator' unselectable='on'></span></li></ul>",
+"</td>",
+"</tr>",
+
+     "</table>",
+
+"</td></tr></table>",                                    
+""); 
+
+//Replace the tokens with the default sharepoint controls 
+formTable = formTable.replace("{{Title_Ctrl}}", getSPFieldRender(ctx, "Title"));
+
+formTable = formTable.replace("{{Affected_x0020_Plant_Ctrl}}", getSPFieldRender(ctx, "Affected_x0020_Plant"));
+formTable = formTable.replace("{{Affected_x0020_Equipment_Ctrl}}", getSPFieldRender(ctx, "Affected_x0020_Equipment"));
+formTable = formTable.replace("{{Date_x0020_of_x0020_Incident_Ctrl}}", getSPFieldRender(ctx, "Date_x0020_of_x0020_Incident"));
+formTable = formTable.replace("{{Maintenance_x0020_Cost_x0020_of__Ctrl}}", getSPFieldRender(ctx, "Maintenance_x0020_Cost_x0020_of_"));
+formTable = formTable.replace("{{Production_x0020_Cost_x0020_of_x_Ctrl}}", getSPFieldRender(ctx, "Production_x0020_Cost_x0020_of_x"));
+formTable = formTable.replace("{{DMS_x0020_Category_Ctrl}}", getSPFieldRender(ctx, "DMS_x0020_Category"));
+formTable = formTable.replace("{{Classification_Ctrl}}", getSPFieldRender(ctx, "Classification"));
+formTable = formTable.replace("{{Details_x0020_of_x0020_Incident_Ctrl}}", getSPFieldRender(ctx, "Details_x0020_of_x0020_Incident"));
+formTable = formTable.replace("{{Status_Ctrl}}", getSPFieldRender(ctx, "Status"));
+formTable = formTable.replace("{{Initiator_Ctrl}}", getSPFieldRender(ctx, "Initiator"));
+formTable = formTable.replace("{{Initiator_x0020_Initiation_x0020_Ctrl}}", getSPFieldRender(ctx, "Initiator_x0020_Initiation_x0020"));
+formTable = formTable.replace("{{Initiator_x0020_Manager_Ctrl}}", getSPFieldRender(ctx, "Initiator_x0020_Manager"));
+formTable = formTable.replace("{{Initiator_x0020_Manager_x0020_Ap_Ctrl}}", getSPFieldRender(ctx, "Initiator_x0020_Manager_x0020_Ap"));
+formTable = formTable.replace("{{APM_x0020_Focal_x0020_Point_Ctrl}}", getSPFieldRender(ctx, "APM_x0020_Focal_x0020_Point"));
+formTable = formTable.replace("{{APM_x0020_Focal_x0020_Point_x0021_Ctrl}}", getSPFieldRender(ctx, "APM_x0020_Focal_x0020_Point_x0021"));
+formTable = formTable.replace("{{Analysis_x0020_Assigned_x0020_De_Ctrl}}", getSPFieldRender(ctx, "Analysis_x0020_Assigned_x0020_De"));
+formTable = formTable.replace("{{Analysis_x0020_Assigned_x0020_De0_Ctrl}}", getSPFieldRender(ctx, "Analysis_x0020_Assigned_x0020_De0"));
+formTable = formTable.replace("{{Analysis_x0020_Assigned_x0020_En_Ctrl}}", getSPFieldRender(ctx, "Analysis_x0020_Assigned_x0020_En"));
+formTable = formTable.replace("{{Analysis_x0020_Assigned_x0020_En2_Ctrl}}", getSPFieldRender(ctx, "Analysis_x0020_Assigned_x0020_En2"));
+formTable = formTable.replace("{{Analysis_x0020_Assigned_x0020_En0_Ctrl}}", getSPFieldRender(ctx, "Analysis_x0020_Assigned_x0020_En0"));
+formTable = formTable.replace("{{Analysis_x0020_Assigned_x0020_En3_Ctrl}}", getSPFieldRender(ctx, "Analysis_x0020_Assigned_x0020_En3"));
+formTable = formTable.replace("{{APM_x0020_Focal_x0020_Point_x002_Ctrl}}", getSPFieldRender(ctx, "APM_x0020_Focal_x0020_Point_x002"));
+formTable = formTable.replace("{{APM_x0020_Focal_x0020_Point_x0022_Ctrl}}", getSPFieldRender(ctx, "APM_x0020_Focal_x0020_Point_x0022"));
+formTable = formTable.replace("{{Recommendation_x0020_Assigned_x0_Ctrl}}", getSPFieldRender(ctx, "Recommendation_x0020_Assigned_x0"));
+formTable = formTable.replace("{{Recommendation_x0020_Assigned_x01_Ctrl}}", getSPFieldRender(ctx, "Recommendation_x0020_Assigned_x01"));
+formTable = formTable.replace("{{Recommendation_x0020_Assigned_x00_Ctrl}}", getSPFieldRender(ctx, "Recommendation_x0020_Assigned_x00"));
+formTable = formTable.replace("{{Recommendation_x0020_Assigned_x02_Ctrl}}", getSPFieldRender(ctx, "Recommendation_x0020_Assigned_x02"));
+formTable = formTable.replace("{{Analysis_x0020_Assigned_x0020_En1_Ctrl}}", getSPFieldRender(ctx, "Analysis_x0020_Assigned_x0020_En1"));
+formTable = formTable.replace("{{Analysis_x0020_Assigned_x0020_En4_Ctrl}}", getSPFieldRender(ctx, "Analysis_x0020_Assigned_x0020_En4"));
+formTable = formTable.replace("{{APM_x0020_Focal_x0020_Point_x0020_Ctrl}}", getSPFieldRender(ctx, "APM_x0020_Focal_x0020_Point_x0020"));
+formTable = formTable.replace("{{APM_x0020_Focal_x0020_Point_x0023_Ctrl}}", getSPFieldRender(ctx, "APM_x0020_Focal_x0020_Point_x0023"));
+formTable = formTable.replace("{{Concerned_x0020_Department_Ctrl}}", getSPFieldRender(ctx, "Concerned_x0020_Department"));
+formTable = formTable.replace("{{Assign_x0020_To_Ctrl}}", getSPFieldRender(ctx, "Assign_x0020_To"));
+formTable = formTable.replace("{{Delegate_Ctrl}}", getSPFieldRender(ctx, "Delegate"));
+
+formTable = formTable.replace("{{Initiator_x0020_Manager_x0020_Ap0_Ctrl}}", getSPFieldRender(ctx, "Initiator_x0020_Manager_x0020_Ap0"));
+formTable = formTable.replace("{{APM_x0020_Focal_x0020_Point_x0024_Ctrl}}", getSPFieldRender(ctx, "APM_x0020_Focal_x0020_Point_x0024"));
+formTable = formTable.replace("{{Analysis_x0020_Assigned_x0020_De1_Ctrl}}", getSPFieldRender(ctx, "Analysis_x0020_Assigned_x0020_De1"));
+formTable = formTable.replace("{{Analysis_x0020_Assigned_x0020_En5_Ctrl}}", getSPFieldRender(ctx, "Analysis_x0020_Assigned_x0020_En5"));
+formTable = formTable.replace("{{Analysis_x0020_Assigned_x0020_En6_Ctrl}}", getSPFieldRender(ctx, "Analysis_x0020_Assigned_x0020_En6"));
+formTable = formTable.replace("{{APM_x0020_Focal_x0020_Point_x0025_Ctrl}}", getSPFieldRender(ctx, "APM_x0020_Focal_x0020_Point_x0025"));
+formTable = formTable.replace("{{Recommendation_x0020_Assigned_x03_Ctrl}}", getSPFieldRender(ctx, "Recommendation_x0020_Assigned_x03"));
+formTable = formTable.replace("{{Recommendaion_x0020_Assigned_x00_Ctrl}}", getSPFieldRender(ctx, "Recommendaion_x0020_Assigned_x00"));
+formTable = formTable.replace("{{Analysis_x0020_Assigned_x0020_En7_Ctrl}}", getSPFieldRender(ctx, "Analysis_x0020_Assigned_x0020_En7"));
+formTable = formTable.replace("{{APM_x0020_Focal_x0020_Point_x0026_Ctrl}}", getSPFieldRender(ctx, "APM_x0020_Focal_x0020_Point_x0026"));
+
+formTable = formTable.replace("{{Attachments_Ctrl}}", getSPFieldRender(ctx, "Attachments")); // this is to replace the placeholder for attachment with the attachment field's html. 
+formTable = formTable.replace("{{FormId}}", ctx.FormUniqueId);        
+formTable = formTable.replace("{{SaveButtonName}}", $get(WPQ2FormCtx.SubmitButtonID).name);
+return formTable; 
+} 
+    //This function code set the required properties and call the OOTB (default) function that use to render Sharepoint Fields  
+    function getSPFieldRender(ctx, fieldName) 
+    { 
+        var fieldContext = ctx; 
+ 
+        //Get the filed Schema 
+        var result = ctx.ListSchema.Field.filter(function( obj ) { 
+            return obj.Name == fieldName; 
+        }); 
+ 
+        //Set the field Schema  & default value 
+        fieldContext.CurrentFieldSchema = result[0]; 
+        fieldContext.CurrentFieldValue = ctx.ListData.Items[0][fieldName]; 
+ 
+        //Call  OOTB field render function  
+        return ctx.Templates.Fields[fieldName](fieldContext); 
+    } 
+
+function cancelItem() {
+var cancelUrl = _spPageContextInfo.webAbsoluteUrl + "/Lists/Defect%20Management%20System/";
+window.location.href = cancelUrl;
+}
+
+function underDevelopment() {
+alert("New DMS is under development.");
+}
+
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+setControls();
+
+function setControls() {
+$("#part1").closest("td").css('height','0px');
+$("input[id='Title_fa564e0f-0c70-4ab9-b863-0177e6ddd247_$TextField']").css('width','200px');
+$("input[id='Affected_x0020_Equipment_a6cee22c-6a49-46f4-beb7-401d022c753f_$TextField']").css('width','200px');
+$("input[id='Maintenance_x0020_Cost_x0020_of__ebaf439e-77c8-4e00-a903-5b56569a20b5_$TextField']").css('width','200px');
+$("input[id='Production_x0020_Cost_x0020_of_x_bc018494-c58c-42b1-a991-08d831f47be9_$TextField']").css('width','200px');
+$("select").css('width','185px');
+$("select[id='Date_x0020_of_x0020_Incident_b3184dcd-350c-425e-be62-60dee9333d5e_$DateTimeFieldDateHours']").css('width','63px'); // 63px default
+$("select[id='Date_x0020_of_x0020_Incident_b3184dcd-350c-425e-be62-60dee9333d5e_$DateTimeFieldDateMinutes']").css('width','42px'); // 42px default
+$("textarea[id='Details_x0020_of_x0020_Incident_efa4b6f3-cd56-452b-9e30-188e3dd9e735_$TextField']").css('width','890px');
+$("select[id='Affected_x0020_Plant_59e8182a-01ad-4236-8726-eabc180abb67_$DropDownChoice']").css('width','290px');
+$("select[id='DMS_x0020_Category_68c7a684-2c02-483d-a512-6d11b6cbbff7_$DropDownChoice']").css('width','290px');
+$("input[id='Affected_x0020_Equipment_a6cee22c-6a49-46f4-beb7-401d022c753f_$TextField']").css('width','278px');
+$("input[id='Maintenance_x0020_Cost_x0020_of__ebaf439e-77c8-4e00-a903-5b56569a20b5_$TextField']").css('width','278px');
+$("input[id='Title_fa564e0f-0c70-4ab9-b863-0177e6ddd247_$TextField']").css('width','370px');
+$("input[id='Production_x0020_Cost_x0020_of_x_bc018494-c58c-42b1-a991-08d831f47be9_$TextField']").css('width','370px');
+$("input[id='Date_x0020_of_x0020_Incident_b3184dcd-350c-425e-be62-60dee9333d5e_$DateTimeFieldDate']").css('width','225px');
+
+$("select[id='Status_c15b34c3-ce7d-490a-b133-3f4de8801b76_$DropDownChoice']").prop('disabled',true);
+$("select[id='Initiator_x0020_Manager_x0020_Ap_fb96fe5a-6390-4fd0-aa4a-5297f990f709_$DropDownChoice']").prop('disabled',true);
+$("select[id='APM_x0020_Focal_x0020_Point_x0021_01658b96-f103-4f5b-ad63-32f8d865e141_$DropDownChoice']").prop('disabled',true);
+$("select[id='Analysis_x0020_Assigned_x0020_De0_2bc3b8fc-e22f-42a5-9852-a6a274cea5f6_$DropDownChoice']").prop('disabled',true);
+$("select[id='Analysis_x0020_Assigned_x0020_En2_c8eb10d0-3e2f-4ad4-80b1-fead65c23026_$DropDownChoice']").prop('disabled',true);
+$("select[id='Analysis_x0020_Assigned_x0020_En3_e0dd20a8-cbe3-481d-8b3b-4a511949182d_$DropDownChoice']").prop('disabled',true);
+$("select[id='APM_x0020_Focal_x0020_Point_x0022_57e90dc8-af7c-4a68-8edb-be93b5debf70_$DropDownChoice']").prop('disabled',true);
+$("select[id='Recommendation_x0020_Assigned_x01_ce49c1e9-4a83-4506-a3ca-922533749e12_$DropDownChoice']").prop('disabled',true);
+$("select[id='Recommendation_x0020_Assigned_x02_557cb6bd-7440-40d6-84ae-ba2041764380_$DropDownChoice']").prop('disabled',true);
+$("select[id='Analysis_x0020_Assigned_x0020_En4_c7a760bd-9bfb-4449-9a03-aeff4f734f0f_$DropDownChoice']").prop('disabled',true);
+$("select[id='APM_x0020_Focal_x0020_Point_x0023_a7cdd199-0cc3-4535-a16f-0f774cb96ee7_$DropDownChoice']").prop('disabled',true);
+
+//$(".ms-metadata").css('color','#e35205')
+$("input[class='sp-peoplepicker-editorInput']")[3].disabled=true;
+$("input[class='sp-peoplepicker-editorInput']")[4].disabled=true;
+$("input[class='sp-peoplepicker-editorInput']")[5].disabled=true;
+$("input[class='sp-peoplepicker-editorInput']")[7].disabled=true;
+$("input[class='sp-peoplepicker-editorInput']")[8].disabled=true;
+$("input[class='sp-peoplepicker-editorInput']")[9].disabled=true;
+
+$("div[id='Analysis_x0020_Assigned_x0020_De_24ac9f1d-ed83-4907-99e0-01c4ddadc336_$ClientPeoplePicker']").css('background-color','#c6c8ca');
+$("div[id='Analysis_x0020_Assigned_x0020_En_1206a19f-6eed-4bb3-90bf-f7f1ada7cabd_$ClientPeoplePicker']").css('background-color','#c6c8ca');
+$("div[id='Analysis_x0020_Assigned_x0020_En0_02f69b0c-edf8-445f-82df-8cc8b682844e_$ClientPeoplePicker']").css('background-color','#c6c8ca');
+$("div[id='Recommendation_x0020_Assigned_x0_a95b3515-8a0f-43ea-abba-ee611725c34b_$ClientPeoplePicker']").css('background-color','#c6c8ca');
+$("div[id='Recommendation_x0020_Assigned_x00_d48ee199-73ec-4369-9ff3-73ea8ac440ea_$ClientPeoplePicker']").css('background-color','#c6c8ca');
+$("div[id='Analysis_x0020_Assigned_x0020_En1_0357c831-1ffd-4abd-b8ce-469f67caa2ba_$ClientPeoplePicker']").css('background-color','#c6c8ca');
+
+
+var $fieldTR=$("#reportsattachments").closest("tr");
+$fieldTR.after("<tr><td colspan='2' style='border-bottom-style: solid; border-bottom-width: 1px; border-bottom-color: #939598; font-family: SABIC Typeface Text Light !important;'><div class='ms-WPBody noindex '><div class='ms-rtestate-field'><span style='color: #000; font-family: SABIC Typeface Text Light !important;'><a href='#' onclick='showhide()' style='cursor: pointer; color: #009fdf !important; text-decoration: underline;'>Click here</a> to upload report or any supporting documents.</span></div></div></td></tr>");
+
+	var reBuildTR = $('<tr></tr>');
+	$('table[id="Classification_81783197-e07d-42eb-8227-5b142db73bf3_ChoiceRadioTable"]').find('td').each(function () {
+	if ($('table[id="Classification_81783197-e07d-42eb-8227-5b142db73bf3_ChoiceRadioTable"]').find('td').length!==1)
+	{
+		$(reBuildTR).append($(this).width('126px'));	
+	}
+	else 
+	{
+		$(reBuildTR).append($(this).width('126px'));	
+	}
+	})
+	$('table[id="Classification_81783197-e07d-42eb-8227-5b142db73bf3_ChoiceRadioTable"]').html("").append(reBuildTR);
+}
+
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+setTimeout(loadFunctions, 500);
+});
+
+function loadFunctions() {
+//return true;
+generateDMSNo();
+//addSectionHeader();
+}
+
+function generateDMSNo() {
+var now = new Date();
+timestamp = now.getFullYear().toString(); 
+timestamp += (now.getMonth() < 9 ? '0' : '') + (now.getMonth()+1).toString(); // JS months are 0-based, so +1 and pad with 0's
+timestamp += ((now.getDate() < 10) ? '0' : '') + now.getDate().toString(); // pad with a 0
+timestamp += ((now.getHours() < 10) ? '0' : '') + now.getHours().toString(); 
+timestamp += ((now.getMinutes() < 10) ? '0' : '') + now.getMinutes().toString();
+timestamp += ((now.getSeconds() < 10) ? '0' : '') + now.getSeconds().toString();
+var dmsNo=$("input[id='Title_fa564e0f-0c70-4ab9-b863-0177e6ddd247_$TextField']");
+dmsNo.val(timestamp);
+dmsNo.prop('disabled',true);
+dmsNo.css('color','#000')
+}
+
+function addSectionHeader() {
+var $fieldTR=$("input[id='Title_fa564e0f-0c70-4ab9-b863-0177e6ddd247_$TextField']").closest("tr");
+$fieldTR.before("<tr><td colspan='2'><div class='ms-WPBody noindex '><div class='ms-rtestate-field'><hr /><span style='color: #009fdf; font-size:15pt;'>DEFECT DETAILS</span></div></div></td></tr>");
+
+$fieldTR=$("textarea[id='Details_x0020_of_x0020_Incident_efa4b6f3-cd56-452b-9e30-188e3dd9e735_$TextField']").closest("tr");
+$fieldTR.after("<tr><td colspan='2'><div class='ms-WPBody noindex '><div class='ms-rtestate-field'><hr /><span style='color: #009fdf; font-size:15pt;'>INITIATOR AND APPROVAL DETAILS</span></div></div></td></tr>");
+
+$fieldTR=$("select[id='APM_x0020_Focal_x0020_Point_x0023_a7cdd199-0cc3-4535-a16f-0f774cb96ee7_$DropDownChoice']").closest("tr");
+$fieldTR.after("<tr><td colspan='2'><div class='ms-WPBody noindex '><div class='ms-rtestate-field'><hr /><span style='color: #009fdf; font-size:15pt;'>RELIABILITY RECOMMENDATION</span></div></div></td></tr>");
+}
+
+</script>
+
+<script type="text/javascript" language="javascript">
+function showhide() {
+$("span[id='part1']")[0].style.display='none';
+$("span[id='partAttachment']")[0].style.display='';
+$("div[id='WPQ2ClientFormTopContainer']")[0].style.display='none';
+}
+</script>
+
+<script type="text/javascript">
+    ExecuteOrDelayUntilScriptLoaded(function () {
+        var attachCancelButton = document.getElementById("attachCancelButton");
+
+        if (attachCancelButton) {
+            // Store the existing onclick function
+            var existingOnClick = attachCancelButton.onclick;
+
+            // Add your custom function along with the existing one
+            attachCancelButton.onclick = function () {
+                if (existingOnClick) {
+                    existingOnClick(); // Call the existing onclick function
+                }
+
+                myCustomFunction('cancel'); // Call my custom function
+            };
+        }
+    }, "sp.js");
+
+    ExecuteOrDelayUntilScriptLoaded(function () {
+        var attachOKbutton = document.getElementById("attachOKbutton");
+
+        if (attachOKbutton) {
+            // Store the existing onclick function
+            var existingOnClick = attachOKbutton.onclick;
+
+            // Add your custom function along with the existing one
+            attachOKbutton.onclick = function () {
+                if (existingOnClick) {
+                    existingOnClick(); // Call the existing onclick function
+                }
+
+                myCustomFunction('ok'); // Call my custom function
+            };
+        }
+    }, "sp.js");
+
+    function myCustomFunction(val) {
+        //alert("Custom function executed!");
+        if (val=='ok') {
+                if (document.getElementById("onetidIOFile").value!="") {
+                        $("div[id='WPQ2ClientFormTopContainer']")[0].style.display='';
+                }
+        }
+        else {
+        $("div[id='WPQ2ClientFormTopContainer']")[0].style.display='';
+        }
+    }
+</script>
+
+<script type="text/javascript">
+function PreSaveAction(){
+
+if ($("select[id='Affected_x0020_Plant_59e8182a-01ad-4236-8726-eabc180abb67_$DropDownChoice']").val()=="") {
+$("select[id='Affected_x0020_Plant_59e8182a-01ad-4236-8726-eabc180abb67_$DropDownChoice']").focus();
+showRequiredMsg('Plant is a required field.');
+return false;
+}
+
+if ($("input[id='Affected_x0020_Equipment_a6cee22c-6a49-46f4-beb7-401d022c753f_$TextField']").val()=="") {
+$("input[id='Affected_x0020_Equipment_a6cee22c-6a49-46f4-beb7-401d022c753f_$TextField']").focus();
+showRequiredMsg('Affected Equipment is required.');
+$("input[id='Affected_x0020_Equipment_a6cee22c-6a49-46f4-beb7-401d022c753f_$TextField']").css('border','1px solid red');
+return false;
+}
+
+if ($("input[id='Date_x0020_of_x0020_Incident_b3184dcd-350c-425e-be62-60dee9333d5e_$DateTimeFieldDate']").val()=="") {
+$("input[id='Date_x0020_of_x0020_Incident_b3184dcd-350c-425e-be62-60dee9333d5e_$DateTimeFieldDate']").focus();
+showRequiredMsg('Date of Incident is required.');
+$("input[id='Date_x0020_of_x0020_Incident_b3184dcd-350c-425e-be62-60dee9333d5e_$DateTimeFieldDate']").css('border','1px solid red');
+return false;
+}
+
+if ($("input[id='Maintenance_x0020_Cost_x0020_of__ebaf439e-77c8-4e00-a903-5b56569a20b5_$TextField']").val()=="") {
+$("input[id='Maintenance_x0020_Cost_x0020_of__ebaf439e-77c8-4e00-a903-5b56569a20b5_$TextField']").focus();
+showRequiredMsg('Maintenance Cost of Incident is required.');
+$("input[id='Maintenance_x0020_Cost_x0020_of__ebaf439e-77c8-4e00-a903-5b56569a20b5_$TextField']").css('border','1px solid red');
+return false;
+}
+
+if ($("input[id='Production_x0020_Cost_x0020_of_x_bc018494-c58c-42b1-a991-08d831f47be9_$TextField']").val()=="") {
+$("input[id='Production_x0020_Cost_x0020_of_x_bc018494-c58c-42b1-a991-08d831f47be9_$TextField']").focus();
+showRequiredMsg('Production Cost of Incident is required.');
+$("input[id='Production_x0020_Cost_x0020_of_x_bc018494-c58c-42b1-a991-08d831f47be9_$TextField']").css('border','1px solid red');
+return false;
+}
+
+if ($("select[id='DMS_x0020_Category_68c7a684-2c02-483d-a512-6d11b6cbbff7_$DropDownChoice']").val()=="") {
+$("select[id='DMS_x0020_Category_68c7a684-2c02-483d-a512-6d11b6cbbff7_$DropDownChoice']").focus();
+showRequiredMsg('DMS Category is a required field.');
+return false;
+}
+
+if ($("input[name='Classification_81783197-e07d-42eb-8227-5b142db73bf3_$RadioButtonChoiceField']")[0].checked==false && $("input[name='Classification_81783197-e07d-42eb-8227-5b142db73bf3_$RadioButtonChoiceField']")[1].checked==false && $("input[name='Classification_81783197-e07d-42eb-8227-5b142db73bf3_$RadioButtonChoiceField']")[2].checked==false)
+{
+$("input[name='Classification_81783197-e07d-42eb-8227-5b142db73bf3_$RadioButtonChoiceField']").css('background-color','#e35205');
+showRequiredMsg('Please tick appropriate Classification.');
+return false;
+}
+else
+{
+$("input[name='Classification_81783197-e07d-42eb-8227-5b142db73bf3_$RadioButtonChoiceField']").css('background-color','#fff');
+}
+
+if ($("textarea[id='Details_x0020_of_x0020_Incident_efa4b6f3-cd56-452b-9e30-188e3dd9e735_$TextField']").val()=='')
+{
+$("textarea[id='Details_x0020_of_x0020_Incident_efa4b6f3-cd56-452b-9e30-188e3dd9e735_$TextField']").focus();
+showRequiredMsg('Details of Incident is required.');
+$("textarea[id='Details_x0020_of_x0020_Incident_efa4b6f3-cd56-452b-9e30-188e3dd9e735_$TextField']").css('border','1px solid red');
+return false;
+}
+
+if (this.SPClientPeoplePicker.SPClientPeoplePickerDict["Initiator_cd382e03-b834-4145-9b4c-5c04223c36be_$ClientPeoplePicker"].GetAllUserInfo().length==0)
+{
+showRequiredMsg('Initiator name is required.')
+document.getElementsByClassName("sp-peoplepicker-editorInput")[0].focus();
+$("div[id='Initiator_cd382e03-b834-4145-9b4c-5c04223c36be_$ClientPeoplePicker']").css('border','1px solid red');
+return false;
+}
+
+if (this.SPClientPeoplePicker.SPClientPeoplePickerDict["Initiator_x0020_Manager_41959a57-3d8f-4d4b-b7e5-586ff48cfaaa_$ClientPeoplePicker"].GetAllUserInfo().length==0)
+{
+showRequiredMsg('Initiator Manager name is required.')
+document.getElementsByClassName("sp-peoplepicker-editorInput")[1].focus();
+$("div[id='Initiator_x0020_Manager_41959a57-3d8f-4d4b-b7e5-586ff48cfaaa_$ClientPeoplePicker']").css('border','1px solid red');
+return false;
+}
+
+if (this.SPClientPeoplePicker.SPClientPeoplePickerDict["APM_x0020_Focal_x0020_Point_930bb428-1812-48aa-bc3a-d2e21ebde16b_$ClientPeoplePicker"].GetAllUserInfo().length==0)
+{
+showRequiredMsg('APM Focal Point (Stage 1) name is required.')
+document.getElementsByClassName("sp-peoplepicker-editorInput")[2].focus();
+$("div[id='APM_x0020_Focal_x0020_Point_930bb428-1812-48aa-bc3a-d2e21ebde16b_$ClientPeoplePicker']").css('border','1px solid red');
+return false;
+}
+
+if (this.SPClientPeoplePicker.SPClientPeoplePickerDict["APM_x0020_Focal_x0020_Point_x002_d82999cb-d2b8-4296-aa27-a8b26e8bf137_$ClientPeoplePicker"].GetAllUserInfo().length==0)
+{
+showRequiredMsg('APM Focal Point (Stage 2) name is required.')
+document.getElementsByClassName("sp-peoplepicker-editorInput")[6].focus();
+$("div[id='APM_x0020_Focal_x0020_Point_x002_d82999cb-d2b8-4296-aa27-a8b26e8bf137_$ClientPeoplePicker']").css('border','1px solid red');
+return false;
+}
+
+if (this.SPClientPeoplePicker.SPClientPeoplePickerDict["APM_x0020_Focal_x0020_Point_x0020_db225c77-33d6-4510-af4d-971481aea178_$ClientPeoplePicker"].GetAllUserInfo().length==0)
+{
+showRequiredMsg('APM Focal Point (Stage 3) name is required.')
+document.getElementsByClassName("sp-peoplepicker-editorInput")[10].focus();
+$("div[id='APM_x0020_Focal_x0020_Point_x0020_db225c77-33d6-4510-af4d-971481aea178_$ClientPeoplePicker']").css('border','1px solid red');
+return false;
+}
+
+var listname ='Defect Management System';
+var currentitemid=0;
+var siteURL = _spPageContextInfo.webAbsoluteUrl;
+var url = siteURL + "/_api/web/lists/getbytitle('" + listname + "')/items?$select=ID&$OrderBy=ID desc&$top=1";
+
+$.ajax({
+ url: url,
+ method: "GET",
+ async: false,
+ headers: { "Accept": "application/json; odata=verbose" },
+ success: function (data) {
+    if(data.d.results.length>0){
+        currentitemid = data.d.results[0].ID;
+	processSendEmail(currentitemid+1)        
+    }   
+	else { 
+	processSendEmail(1) 
+	}
+ },
+ error: function (data) {      
+ 	alert("Error found while sending email.");	 
+ }
+});  
+
+alert('New DMS is under development.');
+return false;
+}
+
+function processSendEmail(itemid) {
+var initiatorEMAIL=[],recipientEMAIL=[],recipientNAME='';
+initiatorEMAIL.push(this.SPClientPeoplePicker.SPClientPeoplePickerDict["Initiator_cd382e03-b834-4145-9b4c-5c04223c36be_$ClientPeoplePicker"].GetAllUserInfo()[0].EntityData.Email)
+recipientEMAIL.push(this.SPClientPeoplePicker.SPClientPeoplePickerDict["Initiator_x0020_Manager_41959a57-3d8f-4d4b-b7e5-586ff48cfaaa_$ClientPeoplePicker"].GetAllUserInfo()[0].EntityData.Email)
+recipientNAME=this.SPClientPeoplePicker.SPClientPeoplePickerDict["Initiator_x0020_Manager_41959a57-3d8f-4d4b-b7e5-586ff48cfaaa_$ClientPeoplePicker"].GetAllUserInfo()[0].DisplayText;
+
+var href="http://unitedweb1.sabic.com/SAA/Lists/Defect%20Management%20System/EditForm.aspx?ID="+itemid;
+var subject="Defect Management System";
+var body
+body = '<table style="border-collapse:collapse;" border="0" width="">' +
+'<div align="center" style="width:750px;">    ' +
+'<table border="0" cellpadding="0" cellspacing="0" style="width:750px;padding-left:20px;padding-right:20px;border:solid 1px #BFBFBF;">' +
+'  <tbody>' +
+'    <tr>' +
+'      <td style="height:10px;"></td><td></td><td></td><td></td><td></td>' +
+'    </tr>' +
+'    <tr>' +
+'      <td></td><td style="text-align:left;"><!--img src="http://unitedweb1.sabic.com/SAA/OMSOrganization/PublishingImages/ChemistryThatMatters.png" style="text-align:left;" /--></td><td></td><td style="text-align:right;"><img src="http://unitedweb1.sabic.com/SiteAssets/images/logo_UN.gif" style="text-align:right;" /></td><td></td>' +
+'    </tr>' +
+'    <tr>' +
+'      <td></td><td colspan="3" align="undefined" valign="undefined"><span style="text-align:left;font-size:24pt;font-family:SABIC Typeface Headline Light;color:#999">Defect Management System</span></td><td></td>' +
+'    </tr>   ' +
+'    <tr>' +
+'      <td></td><td colspan="3" align="undefined" valign="undefined"><img src="http://unitedweb1.sabic.com/SAA/OMSOrganization/PublishingImages/blueLine.png" width="750" /></td><td></td>' +
+'    </tr>   ' +
+'    <tr>' +
+'      <td></td><td colspan="3" style="height:20px;"></td><td></td>' +
+'    </tr>   ' +
+'    <tr>' +
+'      <td></td><td colspan="3" align="undefined" valign="undefined" style="height:50px;"><span style="font-size:11pt;font-family:SABIC Typeface Text Light;color:#53565A">Dear '+recipientNAME+',</span></td><td></td>' +
+'    </tr>      ' +
+'    <tr>' +
+'      <td></td><td colspan="3" align="undefined" valign="undefined" style="height:50px;"><span style="font-size:11.5pt;font-family:SABIC Typeface Text Light;color:#53565A">A new DMS request has been raised, awaiting for your review and approval.</td><td></td>' +
+'    </tr>      ' +
+'    <tr>' +
+'      <td></td><td colspan="3" align="left" valign="undefined" style="height:50px;"><span style="font-size:11.5pt;font-family:SABIC Typeface Text Light;color:#53565A">You can access the newly created DMS by clicking <a href='+href+'>here</a>.</span></td><td></td>' +
+'    </tr>    ' +
+'    <tr>' +
+'      <td></td><td colspan="3" align="left" valign="undefined" style="height:50px;"><span style="font-size:11.5pt;font-family:SABIC Typeface Text Light;color:#53565A">Best Regards,</span></td><td></td>' +
+'    </tr>    ' +
+'    <tr>' +
+'      <td></td><td colspan="3" style="height:20px;"></td><td></td>' +
+'    </tr>   ' +
+'    <!--tr>' +
+'      <td></td><td colspan="3" align="left" valign="undefined" style="height:50px;"><span style="font-size:10pt;font-family:SABIC Typeface Text Light;color:#999">"Digital Transformation"</span></td><td></td>' +
+'    </tr-->    ' +
+'    <tr>' +
+'      <td></td><td colspan="3" align="left" valign="undefined" style="height:50px;"><span style="font-size:10pt;font-family:SABIC Typeface Text Light;color:#999">With best compliments from WD&CI</span></td><td></td>' +
+'    </tr>    ' +
+'    <tr>' +
+'      <td></td><td colspan="3" align="left" valign="undefined"><img src="http://unitedweb1.sabic.com/SAA/OMSOrganization/PublishingImages/yellowLine.png" width="750" /></td><td></td>' +
+'    </tr>    ' +
+'    <tr>' +
+'      <td></td><td colspan="3" style="height:30px;"><span style="font-size:9pt;font-family:SABIC Typeface Text Light,Arial,sans-serif;color:#e35205">This is an automatically generated notification.&nbsp;Please do not reply to this message.</br></br></br></span></td><td></td>' +
+'    </tr>   ' +
+'  </tbody>' +
+'</table>' +
+'</div>' 
+
+sendEmail(initiatorEMAIL, recipientEMAIL, body, subject);
+}
+
+
+//sendEmail begin
+function sendEmail(from, to, body, subject) {
+var appWebUrl = window.location.protocol + "//" + window.location.host 
+                + _spPageContextInfo.webServerRelativeUrl; //alert(appWebUrl);
+var hostUrl = _spPageContextInfo.siteAbsoluteUrl; //alert(hostUrl);
+//var urlTemplate = appWebUrl + "/_api/SP.Utilities.Utility.SendEmail"; //alert(urlTemplate);
+var urlTemplate = _spPageContextInfo.webServerRelativeUrl + "/_api/SP.Utilities.Utility.SendEmail";
+var formDigest = document.getElementById("__REQUESTDIGEST").value;
+    $.ajax({
+        contentType: 'application/json',
+        url: urlTemplate,
+        type: 'POST',
+        data: JSON.stringify({
+            'properties': {
+                '__metadata': { 'type': 'SP.Utilities.EmailProperties' },
+                'From': '',
+                'To': { 'results': to },
+                'CC': { 'results': from },
+                'Subject': subject,
+                'Body': body
+            }
+        }
+      ),
+        headers: {
+            "Accept": "application/json;odata=verbose",
+            "content-type": "application/json;odata=verbose",
+            "X-RequestDigest": $("#__REQUESTDIGEST").val() //formDigest
+        },
+        success: function (data) {
+        },
+        error: function (err) {
+            alert('Failed sending email. Error description: '+JSON.stringify(err));
+            SP.UI.ModalDialog.showModalDialog( { title: 'Defect Management System - Error', html : $( "<h1 style='color:red'>Failed sending email. Error description: "+JSON.stringify(err)+"</h1>" ).get( 0 ) } );
+        }
+    });
+}
+//sendEmail end
+
+function showRequiredMsg(msg)
+{
+if (msg==123)
+{
+msg='Type message here...'
+SP.UI.ModalDialog.showModalDialog( { title: 'Required Field', width:500, html : $( "<div><table><tr><td><img style='height:50px;width:50px' src='http://unitedweb1.sabic.com/SAA/OMSOrganization/PublishingImages/exclamation.png' /></td><td><p style='color:red;'>"+msg+"</td></tr></table></div>" ).get( 0 ) } );
+}
+else
+{
+SP.UI.ModalDialog.showModalDialog( { title: 'Required Field', width:500, html : $( "<div><table><tr><td><img style='height:50px;width:50px' src='http://unitedweb1.sabic.com/SAA/OMSOrganization/PublishingImages/exclamation.png' /></td><td><p style='color:red;'>"+msg+"</td></tr></table></div>" ).get( 0 ) } );
+}
+}
+</script>
+
+<script language="javascript" type="text/javascript">
+$(document).ready(function(){
+var APMFPemail=""
+var SelectPlant ="Affected_x0020_Plant_59e8182a-01ad-4236-8726-eabc180abb67_$DropDownChoice";
+$("select[id='"+ SelectPlant +"']").change(function(){
+var plant = $(this).find("option:selected").text();
+switch (plant) {
+case "CO2": 
+case "Ethylene": 
+case "U&O":
+	ClearSPPP("APM Focal Point","");
+	ClearSPPP("APM Focal Point (Stage 2)","");
+	ClearSPPP("APM Focal Point (Stage 3)","");
+	APMFPemail="mutiriabs@united.sabic.com";
+	SetAPMFPSPPP("APM Focal Point",APMFPemail)
+	SetAPMFPSPPP("APM Focal Point (Stage 2)",APMFPemail)
+	SetAPMFPSPPP("APM Focal Point (Stage 3)",APMFPemail)
+	break;
+case "EG1":
+case "EG2": 
+case "EG3": 
+case "LAO":
+	ClearSPPP("APM Focal Point","");
+	ClearSPPP("APM Focal Point (Stage 2)","");
+	ClearSPPP("APM Focal Point (Stage 3)","");
+	APMFPemail="KhayatR@united.sabic.com";
+	SetAPMFPSPPP("APM Focal Point",APMFPemail);
+	SetAPMFPSPPP("APM Focal Point (Stage 2)",APMFPemail)
+	SetAPMFPSPPP("APM Focal Point (Stage 3)",APMFPemail)
+	ClearSPPP("Reliability Reviewer","");
+	break;
+}
+
+
+});
+
+function SetAPMFPSPPP(fieldName, userName, optional) {
+var editorsInfo;
+var _PeoplePicker = $("div[title='" + fieldName + "']");
+var _PeoplePickerTopId = _PeoplePicker.attr('id');
+var _PeoplePickerEditer = $("input[title='" + fieldName + "']");
+_PeoplePickerEditer.val(userName);
+if(_PeoplePickerTopId != undefined) {	
+var _PeoplePickerOject = SPClientPeoplePicker.SPClientPeoplePickerDict[_PeoplePickerTopId];
+//if (optional==undefined)
+//{
+//for(j=0;j<=_PeoplePickerOject.TotalUserCount;j++)
+//{
+//_PeoplePickerOject.DeleteProcessedUser();
+//}
+//}
+_PeoplePickerOject.AddUnresolvedUserFromEditor(true);
+}
+}
+//});
+
+function ClearSPPP(fieldName, userName) {
+var editorsInfo;
+var _PeoplePicker = $("div[title='" + fieldName + "']");
+var _PeoplePickerTopId = _PeoplePicker.attr('id');
+var _PeoplePickerEditer = $("input[title='" + fieldName + "']");
+_PeoplePickerEditer.val(userName);
+if(_PeoplePickerTopId != undefined) {	
+var _PeoplePickerOject = SPClientPeoplePicker.SPClientPeoplePickerDict[_PeoplePickerTopId];
+var ctr=_PeoplePickerOject.TotalUserCount
+for(j=0;j<=ctr;j++)
+{
+_PeoplePickerOject.DeleteProcessedUser();
+}
+}
+}
+
+});
+</script>
+
+<script language="javascript" type="text/javascript">
+$(document).ready(function(){	
+    var MaintenanceCost = "Maintenance_x0020_Cost_x0020_of__ebaf439e-77c8-4e00-a903-5b56569a20b5_$TextField";
+    var ProductionCost = "Production_x0020_Cost_x0020_of_x_bc018494-c58c-42b1-a991-08d831f47be9_$TextField";
+
+    $("input[id='"+ MaintenanceCost +"']").change(function(){
+	var maintcost = $("input[id='"+ MaintenanceCost +"']").val().replace(/,/g, '');
+	if (isNaN(maintcost)){
+		showRequiredMsg('Please enter a valid Maintenance Cost value.');
+		window.setTimeout(function () { 
+      			$("input[id='"+ MaintenanceCost +"']").focus();
+      			$("input[id='"+ MaintenanceCost +"']")[0].value="";
+		}, 0); 
+	        return false;
+	}    
+    });
+
+    $("input[id='"+ ProductionCost +"']").change(function(){
+	var prodcost = $("input[id='"+ ProductionCost +"']").val().replace(/,/g, '');
+	if (isNaN(prodcost)){
+		showRequiredMsg('Please enter a valid Production Cost value.');
+		window.setTimeout(function () { 
+      			$("input[id='"+ ProductionCost +"']").focus();
+      			$("input[id='"+ ProductionCost +"']")[0].value="";
+		}, 0); 
+	        return false;
+	}    
+    });
+
+});
+</script>
