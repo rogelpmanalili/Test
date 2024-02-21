@@ -1,0 +1,50 @@
+
+To achieve this in SharePoint 2013, you can use JavaScript and jQuery to open a dialog or modal when the "Details" button is clicked. Here's a basic example:
+
+1. Make sure jQuery is loaded on your page. You can add it using the following script tag in the master page or directly on your page:
+
+```html
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+```
+
+2. Add an onclick event to your "Details" button, and use jQuery to open a modal/dialog and display your table:
+
+```html
+<div>
+    <!-- Your existing table and data -->
+    <div id="myTable">
+        <!-- Your table content here -->
+    </div>
+
+    <!-- Details button -->
+    <div>
+        <button onclick="showDetails()">Details</button>
+    </div>
+</div>
+
+<script>
+    function showDetails() {
+        // Get the content of your table
+        var tableContent = $('#myTable').html();
+
+        // Create a dialog/modal
+        var dialogDiv = $('<div>').html(tableContent);
+
+        // Open the dialog
+        dialogDiv.dialog({
+            title: 'Details',
+            modal: true,
+            width: 'auto',
+            height: 'auto',
+            resizable: false,
+            close: function () {
+                // Close event logic if needed
+            }
+        });
+    }
+</script>
+```
+
+Make sure to replace `<!-- Your table content here -->` with your actual table content. Adjust the dialog options according to your requirements.
+
+Note: Ensure that jQuery is loaded before your custom script, and remember that modifying SharePoint forms can have implications, so test thoroughly.
