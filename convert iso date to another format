@@ -1,0 +1,26 @@
+
+To convert the date from the format "2024-02-17T21:00:00Z" (ISO 8601) to "month/day/year" format in JavaScript, you can use the `Date` object and its methods. Here's an example function that you can use:
+
+```javascript
+function convertDateFormat(isoDate) {
+    // Parse the ISO date string
+    var dateObj = new Date(isoDate);
+
+    // Get the components
+    var year = dateObj.getFullYear();
+    var month = ('0' + (dateObj.getMonth() + 1)).slice(-2); // Adding 1 because months are zero-based
+    var day = ('0' + dateObj.getDate()).slice(-2);
+
+    // Create the formatted date string
+    var formattedDate = month + '/' + day + '/' + year;
+
+    return formattedDate;
+}
+
+// Example usage:
+var isoDate = "2024-02-17T21:00:00Z";
+var formattedDate = convertDateFormat(isoDate);
+console.log(formattedDate);
+```
+
+This function will take an ISO date string and return a formatted date string in the "month/day/year" format. Adjust the code according to your specific use case in SharePoint 2013.
