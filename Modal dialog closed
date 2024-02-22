@@ -1,0 +1,34 @@
+To achieve your goal of refreshing the list when the modal/dialog is closed, you can modify your existing code to include a callback function that gets executed when the modal is closed. Here's an example modification to your `opennewdialog` function:
+
+```javascript
+function opennewdialog(id, no) {
+    var options = {
+        url: url,
+        showClose: true,
+        width: 800,
+        height: 400,
+        dialogReturnValueCallback: function(result, returnValue) {
+            // This function will be called when the modal/dialog is closed
+            if (result === SP.UI.DialogResult.OK) {
+                // The modal was closed with OK button (e.g., user clicked Save)
+                // You can perform additional actions if needed
+            } else if (result === SP.UI.DialogResult.cancel) {
+                // The modal was closed with Cancel button (e.g., user clicked Close)
+                // Refresh the list or call your refresh function here
+                refreshParentList();
+            }
+        }
+    };
+
+    SP.SOD.execute('sp.ui.dialog.js', 'SP.UI.ModalDialog.showModalDialog', options);
+}
+
+// Function to refresh the parent form list
+function refreshParentList() {
+    // Your code to refresh the list goes here
+    // For example, you can reload the page
+    location.reload();
+}
+```
+
+In this example, the `dialogReturnValueCallback` property is added to the `options` object. This property specifies a function to be called when the modal/dialog is closed. Inside the callback function, you can check the value of `result` to determine how the modal was closed (with OK or Cancel). If the user clicked the Close button (result is `SP.UI.DialogResult.cancel`), you can then call your `refreshParentList` function or include the necessary code to refresh the parent form list.
