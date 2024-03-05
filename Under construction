@@ -1,0 +1,71 @@
+Creating an animated "Page Under Construction" message using JavaScript and embedding it in the Script Editor web part in SharePoint 2013 involves writing some HTML, CSS, and JavaScript code. Below is a simple example to get you started:
+
+1. **Create Your HTML Structure:**
+   - Open a text editor and create a new HTML file with the following content:
+
+    ```html
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            /* Add your CSS styles for the under-construction message */
+            body {
+                margin: 0;
+                overflow: hidden;
+            }
+            #construction-container {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: #f8d7da; /* Adjust background color as needed */
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-family: Arial, sans-serif;
+                color: #721c24; /* Adjust text color as needed */
+                font-size: 24px;
+                z-index: 9999;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="construction-container">
+            <p>This page is under construction.</p>
+        </div>
+
+        <script>
+            // Add your JavaScript code for animations or additional functionality here
+        </script>
+    </body>
+    </html>
+    ```
+
+2. **Customize the Styles and Message:**
+   - Adjust the styles in the `<style>` section to customize the appearance of your "Page Under Construction" message.
+
+3. **Save the HTML File:**
+   - Save the file with a `.html` extension (e.g., `construction.html`).
+
+4. **Upload the HTML File to SharePoint:**
+   - Upload the HTML file to a document library in your SharePoint site.
+
+5. **Embed in Script Editor Web Part:**
+   - Edit the SharePoint page where you want to display the message.
+   - Add a Script Editor web part.
+   - Edit the web part and reference the uploaded HTML file using an `<iframe>` tag:
+
+    ```html
+    <iframe src="/sites/YourSite/YourLibrary/construction.html" width="100%" height="100%" frameborder="0"></iframe>
+    ```
+
+   - Update the `src` attribute with the correct path to your uploaded HTML file.
+
+6. **Save and Publish:**
+   - Save your changes, and if your site requires publishing, publish the page.
+
+This setup will display the "Page Under Construction" message whenever someone visits the SharePoint page. Customize the HTML, CSS, and JavaScript as needed for your specific requirements.
