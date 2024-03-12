@@ -1,0 +1,38 @@
+
+
+Certainly! You can use the Script Editor web part to inject your JavaScript directly into the child form. Follow these steps:
+
+1. Open the child form (`editform.aspx`) in SharePoint Designer.
+
+2. Insert a Script Editor web part on the child form where you want to add your custom JavaScript.
+
+3. Edit the HTML content of the Script Editor web part and insert your custom JavaScript code. Here's an example:
+
+```html
+<script type="text/javascript">
+    // Customize the delete button action
+    function customDeleteAction() {
+        // Your delete logic here, e.g., using SharePoint REST API to delete the item
+
+        // After successful deletion, close the popup dialog
+        SP.UI.ModalDialog.commonModalDialogClose(SP.UI.DialogResult.OK);
+    }
+
+    // Add a custom action to the ribbon for the delete button
+    function addCustomDeleteButtonAction() {
+        var deleteButton = document.getElementById("Ribbon.ListForm.Edit.DeleteItem-Large");
+
+        if (deleteButton) {
+            // Attach your custom delete function to the delete button
+            deleteButton.onclick = customDeleteAction;
+        }
+    }
+
+    // Execute the custom action when the page loads
+    _spBodyOnLoadFunctionNames.push("addCustomDeleteButtonAction");
+</script>
+```
+
+Make sure to replace `"Ribbon.ListForm.Edit.DeleteItem-Large"` with the actual ID of the delete button on your child form.
+
+Save and check in the form, then test the functionality. Remember to thoroughly test it in a development or testing environment before applying it to your production site.
