@@ -1,0 +1,24 @@
+//two condition
+camlQuery.set_viewXml(   
+ '<View><Query><Where><And>' +
+ '<Eq><FieldRef Name=\'Plant\'/><Value Type=\'Text\'>' + plant + '</Value></Eq>' +
+ '<Eq><FieldRef Name=\'EHSS_x0020_Critical\'/><Value Type=\'Text\'>' + ehsscritical + '</Value></Eq>' +
+ '</And></Where></Query></View>'     
+   );
+
+//two condition
+  camlQuery.set_viewXml(   
+ '<View><Query><Where><And>' +
+ '<Eq><FieldRef Name=\'Plant\'/><Value Type=\'Text\'>' + plant + '</Value></Eq>' +
+ '<Eq><FieldRef Name=\'MDCR_x0020_Type\'/><Value Type=\'Text\'>' + mdcrtype + '</Value></Eq>' +
+ '</And></Where></Query></View>'     
+   );
+
+//three not working
+  camlQuery.set_viewXml(   
+ '<View><Query><Where><And>' +
+ '<Eq><FieldRef Name=\'Plant\'/><Value Type=\'Text\'>' + plant + '</Value></Eq>' +
+ '<Eq><FieldRef Name=\'EHSS_x0020_Critical\'/><Value Type=\'Text\'>' + ehsscritical + '</Value></Eq>' +
+ '<Eq><FieldRef Name=\'MDCR_x0020_Type\'/><Value Type=\'Text\'>' + mdcrtype + '</Value></Eq>' +
+ '</And></Where></Query></View>'     
+   );
