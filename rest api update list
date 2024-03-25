@@ -1,0 +1,52 @@
+
+If your criteria is based on the Title column, you can adjust the code to filter items based on the Title column. Here's how you can modify the code to achieve this:
+
+```javascript
+var siteUrl = 'https://your_sharepoint_site_url';
+var listName = 'your_list_name';
+var statusToUpdate = 'New Status'; // Replace with the desired status value
+var titleCriteria = 'your_title_criteria'; // Replace with your specific title criteria
+
+// Make a GET request to retrieve items based on your criteria
+$.ajax({
+    url: siteUrl + "/_api/web/lists/getbytitle('" + listName + "')/items?$filter=Title eq '" + titleCriteria + "'",
+    type: "GET",
+    headers: {
+        "Accept": "application/json;odata=verbose"
+    },
+    success: function (data) {
+        var items = data.d.results;
+
+        // Iterate through the retrieved items
+        items.forEach(function(item) {
+            // Modify the 'Status' field value
+            item.Status = statusToUpdate;
+
+            // Send a POST request to update the item
+            $.ajax({
+                url: item.__metadata.uri,
+                type: "POST",
+                contentType: "application/json;odata=verbose",
+                data: JSON.stringify(item),
+                headers: {
+                    "X-HTTP-Method": "MERGE",
+                    "IF-MATCH": item.__metadata.etag,
+                    "Accept": "application/json;odata=verbose",
+                    "X-RequestDigest": $("#__REQUESTDIGEST").val()
+                },
+                success: function (data) {
+                    console.log("Item updated successfully");
+                },
+                error: function (error) {
+                    console.log("Error updating item: " + JSON.stringify(error));
+                }
+            });
+        });
+    },
+    error: function (error) {
+        console.log("Error retrieving items: " + JSON.stringify(error));
+    }
+});
+```
+
+Replace `'your_title_criteria'` with the specific title value you want to use as the criteria. This code will filter items where the Title column matches the specified criteria and update the "Status" field for those items.
