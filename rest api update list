@@ -1,3 +1,71 @@
+Thank you for providing the correct column name. You can modify the code accordingly. Here's the updated code snippet with the correct column name "Overall Status":
+
+```javascript
+// Set your SharePoint site URL
+var siteUrl = "https://your-sharepoint-site-url";
+
+// Set the list name and item title
+var listName = "YourListName";
+var itemTitle = "YourItemTitle";
+
+// Set the new value for the Overall Status column
+var newOverallStatusValue = "Yes";
+
+// Construct the endpoint URL
+var endpointUrl = siteUrl + "/_api/web/lists/getbytitle('" + listName + "')/items?$filter=Title eq '" + itemTitle + "'";
+
+// Make the REST API call to retrieve the items
+$.ajax({
+    url: endpointUrl,
+    type: "GET",
+    headers: {
+        "Accept": "application/json;odata=verbose"
+    },
+    success: function(data) {
+        var itemsToUpdate = data.d.results;
+        
+        // Loop through each item and update the Overall Status column
+        itemsToUpdate.forEach(function(item) {
+            var itemId = item.Id;
+            var updateUrl = siteUrl + "/_api/web/lists/getbytitle('" + listName + "')/items(" + itemId + ")";
+            var itemData = {
+                "__metadata": { type: "SP.Data." + listName + "ListItem" },
+                "Overall_x0020_Status": newOverallStatusValue
+            };
+
+            // Make the REST API call to update the item
+            $.ajax({
+                url: updateUrl,
+                type: "POST",
+                contentType: "application/json;odata=verbose",
+                data: JSON.stringify(itemData),
+                headers: {
+                    "Accept": "application/json;odata=verbose",
+                    "X-HTTP-Method": "MERGE",
+                    "X-RequestDigest": $("#__REQUESTDIGEST").val(),
+                    "If-Match": "*"
+                },
+                success: function(data) {
+                    console.log("Item updated successfully");
+                },
+                error: function(error) {
+                    console.log("Error updating item: " + JSON.stringify(error));
+                }
+            });
+        });
+    },
+    error: function(error) {
+        console.log("Error retrieving items: " + JSON.stringify(error));
+    }
+});
+```
+
+Replace `"YourListName"` with the name of your SharePoint list, `"YourItemTitle"` with the title of the item you want to update, and `"https://your-sharepoint-site-url"` with the URL of your SharePoint site. This code will update the "Overall Status" column for all items that match the specified criteria.
+
+
+
+
+---------
 
 If your criteria is based on the Title column, you can adjust the code to filter items based on the Title column. Here's how you can modify the code to achieve this:
 
